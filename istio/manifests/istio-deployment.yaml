@@ -1,0 +1,10 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: ${namespace}
+  name: ${namespace}-control-plane
+spec:
+  profile: default
+  addonComponents:
+    kiali:
+      enabled: true
