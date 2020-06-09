@@ -55,7 +55,7 @@ jobs:
           tar xvzf terraform-provider-k8s_0.7.7_linux_amd64.tar.gz && chmod +x terraform-provider-k8s
           mkdir -p ~/.terraform.d/plugins
           mv terraform-provider-k8s ~/.terraform.d/plugins
-          
+
       - name: "go vet"
         run: go vet ./...
 
