@@ -9,11 +9,26 @@ variable "istio_operator_namespace" {
 }
 
 variable "ingress_gateway_annotations" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
 variable "ingress_gateway_ip" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "domain_name" {
+  type    = string
+  default = ""
+}
+
+variable "use_cert_manager" {
+  type    = bool
+  default = false
+}
+
+variable "certificate_name" {
+  type    = string
   default = ""
 }

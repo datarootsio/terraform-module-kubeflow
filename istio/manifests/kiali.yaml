@@ -1,0 +1,65 @@
+%{ if use_cert_manager ~}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: kiali
+  namespace: ${namespace}
+spec:
+  secretName: kiali
+  commonName: kiali.${domain_name}
+  dnsNames:
+  - kiali.${domain_name}
+%{ if lb_ip != "" ~}
+  ipAddresses:
+  - ${lb_ip}
+%{ endif ~}
+---
+%{ endif ~}
+%{ if credential_name != "" || use_cert_manager }
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: kiali-gateway
+  namespace: ${namespace}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https-kiali
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: %{ if use_cert_manager ~}kiali%{ else }${credential_name}%{ endif ~}
+    hosts:
+    - "kiali.${domain_name}"
+---
+%{ endif ~}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali-vs
+  namespace: ${namespace}
+spec:
+  hosts:
+  - "kiali.${domain_name}"
+  gateways:
+  - kiali-gateway
+  http:
+  - route:
+    - destination:
+        host: kiali
+        port:
+          number: 20001
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: kiali
+  namespace: ${namespace}
+spec:
+  host: kiali
+  trafficPolicy:
+    tls:
+      mode: DISABLE

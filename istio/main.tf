@@ -30,3 +30,23 @@ resource "k8s_manifest" "istio_deployment" {
     }
   )
 }
+
+locals {
+  kiali = split(
+    "\n---\n", templatefile("${path.module}/manifests/kiali.yaml",
+      {
+        credential_name  = var.certificate_name,
+        domain_name      = var.domain_name,
+        lb_ip            = var.ingress_gateway_ip,
+        namespace        = var.istio_namespace,
+        use_cert_manager = var.use_cert_manager
+      }
+    )
+  )
+}
+
+resource "k8s_manifest" "cert_manager_crds" {
+  depends_on = [kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator]
+  count      = length(local.kiali)
+  content    = local.kiali[count.index]
+}
