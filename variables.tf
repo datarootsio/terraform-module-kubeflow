@@ -23,3 +23,12 @@ variable "cert_manager_version" {
   default = "v0.15.1"
 }
 
+variable "ingress_gateway_annotations" {
+  type    = map(string)
+  default = {}
+}
+
+variable "ingress_gateway_ip" {
+  type    = string
+  default = ""
+}

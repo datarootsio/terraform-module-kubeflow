@@ -39,9 +39,11 @@ func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
 	_, options, err := getDefaultTerraformOptions(t)
 	assert.NoError(t, err)
 
-	options.Vars["cert_manager_namespace"] = "cert-manager-etjllj"
-	options.Vars["istio_operator_namespace"] = "istio-operator-etjllj"
-	options.Vars["istio_namespace"] = "istio-system-etjllj"
+	options.Vars["cert_manager_namespace"] = "cert-manager"
+	options.Vars["istio_operator_namespace"] = "istio-operator"
+	options.Vars["istio_namespace"] = "istio-system"
+	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
+	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 
 	/*	k8sOptions := k8s.NewKubectlOptions("", "", "default")
 		k8s.CreateNamespace(t, k8sOptions, namespace)

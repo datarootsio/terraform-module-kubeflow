@@ -8,3 +8,17 @@ spec:
   addonComponents:
     kiali:
       enabled: true
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        serviceAnnotations:
+%{ for key,value in annotations ~}
+          ${key}: ${value}
+%{ endfor ~}
+%{ if lb_ip != "" }
+        service:
+          type: LoadBalancer
+          loadBalancerIP: ${lb_ip}
+%{ endif ~}
