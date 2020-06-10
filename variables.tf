@@ -47,3 +47,8 @@ variable "certificate_name" {
   type    = string
   default = ""
 }
+
+variable "letsencrypt_email" {
+  type    = string
+  default = ""
+}

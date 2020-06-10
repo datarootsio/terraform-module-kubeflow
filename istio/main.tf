@@ -31,6 +31,18 @@ resource "k8s_manifest" "istio_deployment" {
   )
 }
 
+resource "null_resource" "wait_crds" {
+  depends_on = [k8s_manifest.istio_deployment]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "while [[ \"$(kubectl get crds | grep 'istio.io' | wc -l)\" -ne \"25\" ]]; do echo \"Waiting for CRDs\";  sleep 5; done"
+  }
+}
+
 locals {
   kiali = split(
     "\n---\n", templatefile("${path.module}/manifests/kiali.yaml",
@@ -45,8 +57,8 @@ locals {
   )
 }
 
-resource "k8s_manifest" "cert_manager_crds" {
-  depends_on = [kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator]
+resource "k8s_manifest" "kiali_manifests" {
+  depends_on = [var.istio_depends_on, kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator, null_resource.wait_crds]
   count      = length(local.kiali)
   content    = local.kiali[count.index]
 }

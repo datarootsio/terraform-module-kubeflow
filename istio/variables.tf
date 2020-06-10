@@ -32,3 +32,8 @@ variable "certificate_name" {
   type    = string
   default = ""
 }
+
+variable "istio_depends_on" {
+  type    = any
+  default = null
+}

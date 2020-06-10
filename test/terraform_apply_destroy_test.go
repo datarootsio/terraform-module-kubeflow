@@ -44,7 +44,8 @@ func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
 	options.Vars["istio_namespace"] = "istio-system"
 	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
 	options.Vars["use_cert_manager"] = true
-	options.Vars["domain_name"] = "foo.example"
+	options.Vars["domain_name"] = "foo.local"
+	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 
 	/*	k8sOptions := k8s.NewKubectlOptions("", "", "default")

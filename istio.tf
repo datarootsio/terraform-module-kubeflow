@@ -12,4 +12,5 @@ module "istio" {
   istio_operator_namespace    = var.istio_operator_namespace
   use_cert_manager            = var.use_cert_manager
   certificate_name            = var.certificate_name
+  istio_depends_on            = helm_release.cert_manager
 }
