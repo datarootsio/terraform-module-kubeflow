@@ -13,6 +13,17 @@ spec:
     - name: istio-ingressgateway
       enabled: true
       k8s:
+        service:
+          externalTrafficPolicy: Local
+          ports:
+          - name: status-port
+            port: 15020
+          - name: http2
+            port: 80
+          - name: https
+            port: 443
+          - name: tls
+            port: 15443
         serviceAnnotations:
 %{ for key,value in annotations ~}
           ${key}: ${value}
