@@ -13,7 +13,14 @@ spec:
     - name: istio-ingressgateway
       enabled: true
       k8s:
+        serviceAnnotations:
+%{ for key,value in annotations ~}
+          ${key}: ${value}
+%{ endfor ~}
+%{ if lb_ip != "" }
         service:
+          type: LoadBalancer
+          loadBalancerIP: ${lb_ip}
           externalTrafficPolicy: Local
           ports:
           - name: status-port
@@ -24,12 +31,4 @@ spec:
             port: 443
           - name: tls
             port: 15443
-        serviceAnnotations:
-%{ for key,value in annotations ~}
-          ${key}: ${value}
-%{ endfor ~}
-%{ if lb_ip != "" }
-        service:
-          type: LoadBalancer
-          loadBalancerIP: ${lb_ip}
 %{ endif ~}
