@@ -49,7 +49,6 @@ locals {
       {
         credential_name  = var.certificate_name,
         domain_name      = var.domain_name,
-        lb_ip            = var.ingress_gateway_ip,
         namespace        = var.istio_namespace,
         use_cert_manager = var.use_cert_manager
       }

@@ -12,10 +12,6 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - kiali.${domain_name}
-%{ if lb_ip != "" ~}
-  ipAddresses:
-  - ${lb_ip}
-%{ endif }
 ---
 %{ endif }
 %{ if credential_name != "" || use_cert_manager }
