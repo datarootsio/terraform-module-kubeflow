@@ -46,12 +46,7 @@ spec:
   gateways:
   - kiali-gateway
   http:
-  - match:
-      - uri:
-          prefix: /kiali/
-    rewrite:
-      uri: /kiali/
-    route:
+  - route:
     - destination:
         host: kiali
         port:
