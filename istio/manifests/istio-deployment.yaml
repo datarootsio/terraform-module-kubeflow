@@ -6,7 +6,13 @@ metadata:
 spec:
   profile: default
   addonComponents:
+    grafana:
+      enabled: true
     kiali:
+      enabled: true
+    prometheus:
+      enabled: true
+    tracing:
       enabled: true
   components:
     ingressGateways:
