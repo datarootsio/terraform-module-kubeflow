@@ -80,6 +80,7 @@ spec:
         port:
           number: 80
 %{ if use_cert_manager ~}
+---
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
@@ -93,9 +94,9 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - kubeflow.${domain_name}
----
 %{ endif }
 %{ if credential_name != "" || use_cert_manager }
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -114,5 +115,4 @@ spec:
       credentialName: %{ if use_cert_manager ~}kubeflow-cert%{ else ~}${credential_name}%{ endif }
     hosts:
       - kubeflow.${domain_name}
----
 %{ endif }
