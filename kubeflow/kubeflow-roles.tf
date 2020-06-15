@@ -1,6 +1,6 @@
 locals {
   kubeflow_roles_manifests = split("\n---\n", templatefile(
-    "${path.module}/manifests/kubeflow_roles.yaml", {}
+    "${path.module}/manifests/kubeflow-roles.yaml", {}
     )
   )
 }
