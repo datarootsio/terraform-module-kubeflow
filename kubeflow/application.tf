@@ -94,6 +94,11 @@ resource "kubernetes_stateful_set" "application_controller_stateful_set" {
   }
 
   spec {
+
+    update_strategy {
+      type = "RollingUpdate"
+    }
+
     selector {
       match_labels = merge(
         local.labels_application,
