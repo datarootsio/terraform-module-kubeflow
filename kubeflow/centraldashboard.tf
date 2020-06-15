@@ -230,8 +230,9 @@ resource "k8s_manifest" "centraldashboard_application_vs" {
   content = templatefile(
     "${path.module}/manifests/centraldashboard-application-vs.yaml",
     {
-      namespace = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels    = local.labels_argo
+      namespace   = kubernetes_namespace.kubeflow.metadata.0.name,
+      labels      = local.labels_argo,
+      domain_name = var.domain_name
     }
   )
 }

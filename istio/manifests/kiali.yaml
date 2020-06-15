@@ -82,8 +82,8 @@ spec:
   - match:
       - uri:
           prefix: /kiali/
-#    rewrite:
-#      uri: /
+    rewrite:
+      uri: /kiali/
     route:
     - destination:
         host: kiali

@@ -388,8 +388,9 @@ resource "k8s_manifest" "argo_crd_application_virtualservice" {
   content = templatefile(
     "${path.module}/manifests/argo-crd-application-virtualservice.yaml",
     {
-      namespace = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels    = local.labels_argo
+      namespace   = kubernetes_namespace.kubeflow.metadata.0.name,
+      labels      = local.labels_argo,
+      domain_name = var.domain_name
     }
   )
 }

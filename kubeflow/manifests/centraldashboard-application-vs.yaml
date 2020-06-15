@@ -67,7 +67,7 @@ spec:
   gateways:
   - kubeflow-gateway
   hosts:
-  - '*'
+  - kubeflow.${domain_name}
   http:
   - match:
     - uri:
@@ -76,6 +76,6 @@ spec:
       uri: /
     route:
     - destination:
-        host: centraldashboard.kubeflow.svc.cluster.local
+        host: centraldashboard.${namespace}.svc.cluster.local
         port:
           number: 80

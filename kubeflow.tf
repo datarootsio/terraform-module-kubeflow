@@ -4,4 +4,5 @@ module "kubeflow" {
     k8s        = k8s
   }
   source = "./kubeflow"
+  domain_name = var.domain_name
 }
