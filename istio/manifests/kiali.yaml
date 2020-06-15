@@ -65,7 +65,7 @@ spec:
       mode: SIMPLE
       credentialName: %{ if use_cert_manager ~}kubeflow-cert%{ else ~}${credential_name}%{ endif }
     hosts:
-      - '*'
+      - kubeflow.${domain_name}
 ---
 %{ endif }
 apiVersion: networking.istio.io/v1alpha3
@@ -75,11 +75,16 @@ metadata:
   namespace: ${namespace}
 spec:
   hosts:
-  - kiali.${domain_name}
+  - kubeflow.${domain_name}
   gateways:
-  - kiali-gateway
+  - kubeflow-gateway
   http:
-  - route:
+  - match:
+      - uri:
+          prefix: /kiali/
+#    rewrite:
+#      uri: /
+    route:
     - destination:
         host: kiali
         port:
