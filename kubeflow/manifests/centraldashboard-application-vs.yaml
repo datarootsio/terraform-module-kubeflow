@@ -1,0 +1,81 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  labels:
+%{ for key,value in labels ~}
+    ${key}: ${value}
+%{ endfor ~}
+  name: centraldashboard
+  namespace: kubeflow
+spec:
+  addOwnerRef: true
+  componentKinds:
+  - group: core
+    kind: ConfigMap
+  - group: apps
+    kind: Deployment
+  - group: rbac.authorization.k8s.io
+    kind: RoleBinding
+  - group: rbac.authorization.k8s.io
+    kind: Role
+  - group: core
+    kind: ServiceAccount
+  - group: core
+    kind: Service
+  - group: networking.istio.io
+    kind: VirtualService
+  descriptor:
+    description: Provides a Dashboard UI for kubeflow
+    keywords:
+    - centraldashboard
+    - kubeflow
+    links:
+    - description: About
+      url: https://github.com/kubeflow/kubeflow/tree/master/components/centraldashboard
+    maintainers:
+    - email: prodonjs@gmail.com
+      name: Jason Prodonovich
+    - email: apverma@google.com
+      name: Apoorv Verma
+    - email: adhita94@gmail.com
+      name: Adhita Selvaraj
+    owners:
+    - email: prodonjs@gmail.com
+      name: Jason Prodonovich
+    - email: apverma@google.com
+      name: Apoorv Verma
+    - email: adhita94@gmail.com
+      name: Adhita Selvaraj
+    type: centraldashboard
+    version: v1beta1
+  selector:
+    matchLabels:
+%{ for key,value in labels ~}
+      ${key}: ${value}
+%{ endfor ~}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  labels:
+%{ for key,value in labels ~}
+    ${key}: ${value}
+%{ endfor ~}
+  name: centraldashboard
+  namespace: kubeflow
+spec:
+  gateways:
+  - kubeflow-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: centraldashboard.kubeflow.svc.cluster.local
+        port:
+          number: 80

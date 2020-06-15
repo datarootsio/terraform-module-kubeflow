@@ -77,6 +77,7 @@ resource "kubernetes_deployment" "mysql" {
       }
 
       spec {
+        automount_service_account_token = true
         volume {
           name = "mysql-persistent-storage"
 
