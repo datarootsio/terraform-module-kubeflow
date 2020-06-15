@@ -1,6 +1,6 @@
 locals {
-  application_application_manifests = split("\n---\n", templatefile(
-    "${path.module}/manifests/application-application.yaml",
+  dex_crd_manifests = split("\n---\n", templatefile(
+    "${path.module}/manifests/dex-crd.yaml",
     {
       namespace = kubernetes_namespace.auth.metadata.0.name,
     }
@@ -8,9 +8,9 @@ locals {
   )
 }
 
-resource "k8s_manifest" "application_application" {
-  count   = length(local.application_application_manifests)
-  content = local.application_application_manifests[count.index]
+resource "k8s_manifest" "dex_crd" {
+  count   = length(local.dex_crd_manifests)
+  content = local.dex_crd_manifests[count.index]
 }
 
 resource "kubernetes_service_account" "dex" {
