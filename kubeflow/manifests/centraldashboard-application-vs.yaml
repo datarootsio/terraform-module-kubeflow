@@ -138,7 +138,7 @@ spec:
       uri: /kiali/
     route:
     - destination:
-        host: kiali.istio-system.svc.cluster.local
+        host: kiali.${istio_namespace}.svc.cluster.local
         port:
           number: 20001
 ---
@@ -162,7 +162,7 @@ spec:
       uri: /
     route:
     - destination:
-        host: grafana.istio-system.svc.cluster.local
+        host: grafana.${istio_namespace}.svc.cluster.local
         port:
           number: 3000
 %{ endif }
@@ -174,3 +174,24 @@ metadata:
   namespace: kubeflow
 spec:
   mode: "OFF"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: add-user-filter
+  namespace: ${istio_namespace}
+spec:
+  filters:
+  - filterConfig:
+      inlineCode: |
+        function envoy_on_request(request_handle)
+            request_handle:headers():add("kubeflow-userid","anonymous@kubeflow.org")
+        end
+    filterName: envoy.lua
+    filterType: HTTP
+    insertPosition:
+      index: FIRST
+    listenerMatch:
+      listenerType: GATEWAY
+  workloadLabels:
+    app: istio-ingressgateway
