@@ -10,11 +10,6 @@ locals {
   )
 }
 
-resource "random_password" "api_server_secret_access_key" {
-  length  = "16"
-  special = true
-}
-
 resource "kubernetes_service_account" "ml_pipeline" {
   metadata {
     name      = "ml-pipeline"
@@ -81,7 +76,7 @@ resource "kubernetes_role_binding" "ml_pipeline" {
   }
 }
 
-resource "kubernetes_config_map" "ml_pipeline_config" {
+resource "kubernetes_secret" "ml_pipeline_config" {
   metadata {
     name      = "ml-pipeline-config"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name
@@ -96,7 +91,7 @@ resource "kubernetes_config_map" "ml_pipeline_config" {
     "config.json" = templatefile("${path.module}/configs/api-server.json",
       {
         access_key        = "minio",
-        secret_access_key = random_password.api_server_secret_access_key.result
+        secret_access_key = random_password.minio_secret_access_key.result
       }
     )
   }
@@ -163,9 +158,8 @@ resource "kubernetes_deployment" "ml_pipeline" {
 
         volume {
           name = "config-volume"
-
-          config_map {
-            name = "ml-pipeline-config"
+          secret {
+            secret_name = "ml-pipeline-config"
           }
         }
 

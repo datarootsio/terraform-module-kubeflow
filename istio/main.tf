@@ -2,11 +2,6 @@ provider "k8s" {}
 
 provider "kubernetes" {}
 
-resource "k8s_manifest" "operator_crd" {
-  depends_on = [kubernetes_cluster_role_binding.istio_operator]
-  content    = templatefile("${path.module}/manifests/operator-crd.yaml", {})
-}
-
 resource "kubernetes_namespace" "istio_namespace" {
   metadata {
     name = var.istio_namespace
@@ -20,7 +15,7 @@ resource "kubernetes_namespace" "istio_namespace" {
 }
 
 resource "k8s_manifest" "istio_deployment" {
-  depends_on = [kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator]
+  depends_on = [kubernetes_deployment.istio_operator, k8s_manifest.operator_crd, kubernetes_cluster_role_binding.istio_operator]
   content = templatefile(
     "${path.module}/manifests/istio-deployment.yaml",
     {
@@ -57,7 +52,7 @@ locals {
 }
 
 resource "k8s_manifest" "kiali_manifests" {
-  depends_on = [var.istio_depends_on, kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator, null_resource.wait_crds]
+  depends_on = [var.istio_depends_on, k8s_manifest.operator_crd, kubernetes_deployment.istio_operator, kubernetes_cluster_role_binding.istio_operator, null_resource.wait_crds]
   count      = length(local.kiali)
   content    = local.kiali[count.index]
 }

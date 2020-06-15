@@ -71,5 +71,5 @@ jobs:
           K3S_KUBECONFIG_MODE: 644
           KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
-          curl -sfL https://get.k3s.io | sh -s -
+          curl -sfL https://get.k3s.io | sh -s - --disable traefik --disable servicelb
           go test -timeout ${{ env.tests_timeout }} ./...

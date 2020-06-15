@@ -10,6 +10,11 @@ resource "kubernetes_namespace" "istio_operator" {
   }
 }
 
+resource "k8s_manifest" "operator_crd" {
+  depends_on = [kubernetes_cluster_role_binding.istio_operator]
+  content    = templatefile("${path.module}/manifests/operator-crd.yaml", {})
+}
+
 resource "kubernetes_deployment" "istio_operator" {
   metadata {
     name      = "istio-operator"
