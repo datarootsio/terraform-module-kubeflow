@@ -161,6 +161,7 @@ spec:
         port:
           number: 3000
 %{ endif }
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
