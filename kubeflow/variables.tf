@@ -15,3 +15,8 @@ variable "certificate_name" {
 variable "istio_namespace" {
   type = string
 }
+
+variable "kubeflow_depends_on" {
+  type    = any
+  default = null
+}

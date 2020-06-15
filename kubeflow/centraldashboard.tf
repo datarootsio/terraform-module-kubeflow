@@ -242,7 +242,7 @@ locals {
 
 resource "k8s_manifest" "centraldashboard_application_vs" {
   count      = length(local.centraldashboard_application_vs_manifests)
-  depends_on = [k8s_manifest.application_crds]
+  depends_on = [k8s_manifest.application_crds, var.kubeflow_depends_on]
   content    = local.centraldashboard_application_vs_manifests[count.index]
 }
 
