@@ -228,11 +228,12 @@ locals {
   centraldashboard_application_vs_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/centraldashboard-application-vs.yaml",
     {
-      namespace        = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels           = local.labels_centraldashboard,
-      domain_name      = var.domain_name,
       credential_name  = var.certificate_name,
+      domain_name      = var.domain_name,
+      istio_namespace  = var.istio_namespace
+      labels           = local.labels_centraldashboard,
       namespace        = kubernetes_namespace.kubeflow.metadata.0.name
+      namespace        = kubernetes_namespace.kubeflow.metadata.0.name,
       use_cert_manager = var.use_cert_manager
     }
     )

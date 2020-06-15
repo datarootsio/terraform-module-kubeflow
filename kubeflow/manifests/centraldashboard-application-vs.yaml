@@ -85,7 +85,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: kubeflow
-  namespace: ${namespace}
+  namespace: ${istio_namespace}
 spec:
   secretName: kubeflow-cert
   commonName: kubeflow.${domain_name}

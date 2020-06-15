@@ -11,3 +11,7 @@ variable "certificate_name" {
   type = string
   default = ""
 }
+
+variable "istio_namespace" {
+  type = string
+}
