@@ -180,7 +180,7 @@ resource "k8s_manifest" "minio_application" {
     "${path.module}/manifests/minio-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels    = local.labels_api_service
+      labels    = local.labels_minio
     }
   )
 }

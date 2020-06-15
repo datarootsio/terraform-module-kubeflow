@@ -135,3 +135,14 @@ resource "kubernetes_persistent_volume_claim" "mysql_pv_claim" {
   }
 }
 
+resource "k8s_manifest" "mysql_application" {
+  depends_on = [k8s_manifest.application_crds]
+
+  content = templatefile(
+    "${path.module}/manifests/mysql-application.yaml",
+    {
+      namespace = kubernetes_namespace.kubeflow.metadata.0.name,
+      labels    = local.labels_mysql
+    }
+  )
+}
