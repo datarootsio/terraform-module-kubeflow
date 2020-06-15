@@ -200,15 +200,20 @@ resource "kubernetes_deployment" "ml_pipeline" {
   }
 }
 
-resource "k8s_manifest" "api_service_application" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  api_service_application_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/api-service-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
       labels    = local.labels_api_service
     }
+    )
   )
+}
+
+resource "k8s_manifest" "api_service_application" {
+  count      = length(local.api_service_application_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.api_service_application_manifests[count.index]
 }
 

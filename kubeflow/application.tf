@@ -139,14 +139,19 @@ resource "kubernetes_stateful_set" "application_controller_stateful_set" {
   }
 }
 
-resource "k8s_manifest" "application_application" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  application_application_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/application-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
       labels    = local.labels_application
     }
+    )
   )
+}
+
+resource "k8s_manifest" "application_application" {
+  count      = length(local.application_application_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.application_application_manifests[count.index]
 }

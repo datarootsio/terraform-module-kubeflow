@@ -136,14 +136,19 @@ resource "kubernetes_persistent_volume_claim" "mysql_pv_claim" {
   }
 }
 
-resource "k8s_manifest" "mysql_application" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  mysql_application_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/mysql-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels    = local.labels_mysql
+      labels    = local.labels_mysql,
     }
+    )
   )
+}
+
+resource "k8s_manifest" "mysql_application" {
+  count      = length(local.mysql_application_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.mysql_application_manifests[count.index]
 }

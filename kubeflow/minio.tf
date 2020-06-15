@@ -173,14 +173,19 @@ resource "kubernetes_persistent_volume_claim" "minio_pv_claim" {
   }
 }
 
-resource "k8s_manifest" "minio_application" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  minio_application_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/minio-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels    = local.labels_minio
+      labels    = local.labels_minio,
     }
+    )
   )
+}
+
+resource "k8s_manifest" "minio_application" {
+  count      = length(local.minio_application_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.minio_application_manifests[count.index]
 }

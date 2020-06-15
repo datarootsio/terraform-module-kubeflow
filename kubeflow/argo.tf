@@ -382,16 +382,21 @@ resource "kubernetes_deployment" "workflow_controller" {
   }
 }
 
-resource "k8s_manifest" "argo_crd_application_virtualservice" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  argo_crd_application_virtualservice_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/argo-crd-application-virtualservice.yaml",
     {
       namespace   = kubernetes_namespace.kubeflow.metadata.0.name,
       labels      = local.labels_argo,
       domain_name = var.domain_name
     }
+    )
   )
+}
+
+resource "k8s_manifest" "argo_crd_application_virtualservice" {
+  count      = length(local.argo_crd_application_virtualservice_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.argo_crd_application_virtualservice_manifests[count.index]
 }
 

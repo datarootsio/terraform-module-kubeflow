@@ -46,8 +46,8 @@ spec:
   gateways:
   - kiali-gateway
   http:
-  - route:
-    - destination:
+    - route:
+      - destination:
         host: kiali
         port:
           number: 20001

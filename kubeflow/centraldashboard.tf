@@ -224,18 +224,25 @@ resource "kubernetes_deployment" "centraldashboard" {
   }
 }
 
-resource "k8s_manifest" "centraldashboard_application_vs" {
-  depends_on = [k8s_manifest.application_crds]
-
-  content = templatefile(
+locals {
+  centraldashboard_application_vs_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/centraldashboard-application-vs.yaml",
     {
       namespace        = kubernetes_namespace.kubeflow.metadata.0.name,
-      labels           = local.labels_argo,
+      labels           = local.labels_centraldashboard,
       domain_name      = var.domain_name,
       credential_name  = var.certificate_name,
       namespace        = kubernetes_namespace.kubeflow.metadata.0.name
       use_cert_manager = var.use_cert_manager
     }
+    )
   )
 }
+
+resource "k8s_manifest" "centraldashboard_application_vs" {
+  count      = length(local.centraldashboard_application_vs_manifests)
+  depends_on = [k8s_manifest.application_crds]
+  content    = local.centraldashboard_application_vs_manifests[count.index]
+}
+
+
