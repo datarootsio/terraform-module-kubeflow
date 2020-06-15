@@ -14,7 +14,8 @@ resource "null_resource" "apply_crd" {
   }
 
   provisioner "local-exec" {
-    command = "kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.crds.yaml"
+    interpreter = ["/bin/bash", "-c"]
+    command     = "kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.crds.yaml"
   }
 }
 
