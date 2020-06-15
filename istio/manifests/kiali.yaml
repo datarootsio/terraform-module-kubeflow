@@ -16,11 +16,11 @@ spec:
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: kubeflow-cert
+  name: kubeflow
   namespace: ${namespace}
 spec:
   secretName: kubeflow-cert
-  commonName: ${domain_name}
+  commonName: kubeflow.${domain_name}
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

@@ -13,7 +13,7 @@ locals {
 resource "kubernetes_service_account" "centraldashboard" {
   metadata {
     name      = "centraldashboard"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = local.labels_centraldashboard
   }
@@ -110,7 +110,7 @@ resource "kubernetes_cluster_role_binding" "centraldashboard" {
 resource "kubernetes_config_map" "parameters" {
   metadata {
     name      = "parameters"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = local.labels_centraldashboard
   }
@@ -123,7 +123,7 @@ resource "kubernetes_config_map" "parameters" {
 resource "kubernetes_service" "centraldashboard" {
   metadata {
     name      = "centraldashboard"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = merge(
       local.labels_argo,
@@ -155,7 +155,7 @@ resource "kubernetes_service" "centraldashboard" {
 resource "kubernetes_deployment" "centraldashboard" {
   metadata {
     name      = "centraldashboard"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = merge(
       local.labels_argo,
@@ -182,6 +182,7 @@ resource "kubernetes_deployment" "centraldashboard" {
       }
 
       spec {
+        automount_service_account_token = true
         container {
           name  = "centraldashboard"
           image = "gcr.io/kubeflow-images-public/centraldashboard:v1.0.0-g3ec0de71"
