@@ -107,10 +107,6 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      number: 80
-      name: http
-      protocol: HTTP
-  - port:
       number: 443
       name: https
       protocol: HTTPS
@@ -133,7 +129,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /istio/kiali/
+        prefix: /kiali/
     rewrite:
       uri: /kiali/
     route:
@@ -157,9 +153,9 @@ spec:
     - method:
         exact: GET
       uri:
-        prefix: /istio/grafana/
+        prefix: /grafana/
     rewrite:
-      uri: /
+      uri: /grafana/
     route:
     - destination:
         host: grafana.${istio_namespace}.svc.cluster.local
