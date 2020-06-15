@@ -107,6 +107,10 @@ spec:
     istio: ingressgateway
   servers:
   - port:
+      number: 80
+      name: http
+      protocol: HTTP
+  - port:
       number: 443
       name: https
       protocol: HTTPS
@@ -115,4 +119,123 @@ spec:
       credentialName: %{ if use_cert_manager ~}kubeflow-cert%{ else ~}${credential_name}%{ endif }
     hosts:
       - kubeflow.${domain_name}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali-vs
+  namespace: ${namespace}
+spec:
+  hosts:
+  - kiali.${domain_name}
+  gateways:
+  - kiali-gateway
+  http:
+    - route:
+      - destination:
+        host: kiali.istio-system.svc.cluster.local
+        port:
+          number: 20001
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana-vs
+  namespace: ${namespace}
+spec:
+  gateways:
+  - kubeflow-gateway
+  hosts:
+  - kubeflow.${domain_name}
+  http:
+  - match:
+    - method:
+        exact: GET
+      uri:
+        prefix: /istio/grafana/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: grafana.istio-system.svc.cluster.local
+        port:
+          number: 3000
 %{ endif }
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: google-api-entry
+  namespace: kubeflow
+spec:
+  hosts:
+  - www.googleapis.com
+  location: MESH_EXTERNAL
+  ports:
+  - name: https
+    number: 443
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: google-storage-api-entry
+  namespace: kubeflow
+spec:
+  hosts:
+  - storage.googleapis.com
+  location: MESH_EXTERNAL
+  ports:
+  - name: https
+    number: 443
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: google-api-vs
+  namespace: kubeflow
+spec:
+  hosts:
+  - www.googleapis.com
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - www.googleapis.com
+    route:
+    - destination:
+        host: www.googleapis.com
+        port:
+          number: 443
+      weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: google-storage-api-vs
+  namespace: kubeflow
+spec:
+  hosts:
+  - storage.googleapis.com
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - storage.googleapis.com
+    route:
+    - destination:
+        host: storage.googleapis.com
+        port:
+          number: 443
+      weight: 100
+
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ClusterRbacConfig
+metadata:
+  name: default
+  namespace: kubeflow
+spec:
+  mode: "OFF"
