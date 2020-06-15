@@ -5,6 +5,6 @@ module "kubeflow" {
   }
   source           = "./kubeflow"
   domain_name      = var.domain_name
-  use_cert_manager = module.istio.use_cert_manager
-  certificate_name = module.istio.certificate_name
+  use_cert_manager = var.use_cert_manager
+  certificate_name = var.certificate_name
 }
