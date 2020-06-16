@@ -5,7 +5,7 @@ This is a module deploying kubeflow purely in Terraform.
 [![maintained by dataroots](https://img.shields.io/badge/maintained%20by-dataroots-%2300b189)](https://dataroots.io)
 [![Terraform 0.12](https://img.shields.io/badge/terraform-0.12-%23623CE4)](https://www.terraform.io)
 [![Terraform Registry](https://img.shields.io/badge/terraform-registry-%23623CE4)](https://registry.terraform.io/modules/datarootsio/kubeflow/module/)
-[![tests](https://github.com/datarootsio/terraform-module-kubeflow/workflows/tests/badge.svg?branch=master)](https://github.com/datarootsio/terraform-module-kubeflow/actions)
+[![tests](https://github.com/datarootsio/terraform-module-kubeflow/workflows/tests/badge.svg?event=pull_request)](https://github.com/datarootsio/terraform-module-kubeflow/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/datarootsio/terraform-module-kubeflow)](https://goreportcard.com/report/github.com/datarootsio/terraform-module-kubeflow)
 
 ## Outputs
