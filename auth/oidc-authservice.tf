@@ -268,6 +268,7 @@ locals {
 }
 
 resource "k8s_manifest" "oidc_authservice" {
+  depends_on = [var.auth_depends_on]
   count   = length(local.oidc_authservice_manifests)
   content = local.oidc_authservice_manifests[count.index]
 }

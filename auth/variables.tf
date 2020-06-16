@@ -41,3 +41,8 @@ variable "static_username" {
 variable "istio_namespace" {
   type = string
 }
+
+variable "auth_depends_on" {
+  type    = any
+  default = null
+}

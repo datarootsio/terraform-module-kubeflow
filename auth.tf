@@ -5,4 +5,5 @@ module "auth" {
   }
   source          = "./auth"
   istio_namespace = var.istio_namespace
+  auth_depends_on = module.istio.wait_for_crds
 }
