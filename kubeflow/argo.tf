@@ -179,6 +179,7 @@ resource "kubernetes_config_map" "workflow_controller_parameters" {
 }
 
 resource "kubernetes_service" "argo_ui" {
+  depends_on = [k8s_manifest.argo_crd_application_virtualservice]
   metadata {
     name      = "argo-ui"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name
@@ -307,6 +308,7 @@ resource "kubernetes_deployment" "argo_ui" {
 }
 
 resource "kubernetes_deployment" "workflow_controller" {
+  depends_on = [k8s_manifest.argo_crd_application_virtualservice]
   metadata {
     name      = "workflow-controller"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

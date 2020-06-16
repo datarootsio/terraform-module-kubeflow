@@ -153,6 +153,7 @@ resource "kubernetes_service" "centraldashboard" {
 }
 
 resource "kubernetes_deployment" "centraldashboard" {
+  depends_on = [k8s_manifest.centraldashboard_application_vs]
   metadata {
     name      = "centraldashboard"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

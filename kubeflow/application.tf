@@ -87,6 +87,7 @@ resource "kubernetes_service" "application_controller_service" {
 }
 
 resource "kubernetes_stateful_set" "application_controller_stateful_set" {
+  depends_on = [k8s_manifest.application_application]
   metadata {
     name      = "application-controller-stateful-set"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

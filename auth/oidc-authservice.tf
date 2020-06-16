@@ -56,6 +56,7 @@ resource "kubernetes_service" "authservice" {
 }
 
 resource "kubernetes_stateful_set" "authservice" {
+  depends_on = [k8s_manifest.oidc_authservice]
   metadata {
     name      = "authservice"
     namespace = var.istio_namespace

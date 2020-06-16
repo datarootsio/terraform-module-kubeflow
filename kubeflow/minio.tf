@@ -76,6 +76,7 @@ resource "kubernetes_service" "minio_service" {
 }
 
 resource "kubernetes_deployment" "minio" {
+  depends_on = [k8s_manifest.minio_application]
   metadata {
     name      = "minio"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

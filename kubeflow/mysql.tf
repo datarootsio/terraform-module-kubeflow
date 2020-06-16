@@ -50,6 +50,7 @@ resource "kubernetes_service" "mysql" {
 }
 
 resource "kubernetes_deployment" "mysql" {
+  depends_on = [k8s_manifest.mysql_application]
   metadata {
     name      = "mysql"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name
