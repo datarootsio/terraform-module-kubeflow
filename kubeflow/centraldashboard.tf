@@ -22,7 +22,7 @@ resource "kubernetes_service_account" "centraldashboard" {
 resource "kubernetes_role" "centraldashboard" {
   metadata {
     name      = "centraldashboard"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = merge(
       local.labels_argo,

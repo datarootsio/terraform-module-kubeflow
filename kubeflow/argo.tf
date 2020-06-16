@@ -396,7 +396,7 @@ locals {
 
 resource "k8s_manifest" "argo_crd_application_virtualservice" {
   count      = length(local.argo_crd_application_virtualservice_manifests)
-  depends_on = [k8s_manifest.application_crds]
+  depends_on = [k8s_manifest.application_crds, var.kubeflow_depends_on]
   content    = local.argo_crd_application_virtualservice_manifests[count.index]
 }
 
