@@ -10,6 +10,7 @@ locals {
 }
 
 resource "kubernetes_secret" "oidc_authservice_parameters" {
+  depends_on = [var.auth_depends_on]
   metadata {
     name      = "oidc-authservice-parameters"
     namespace = var.istio_namespace
@@ -32,6 +33,7 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
 }
 
 resource "kubernetes_service" "authservice" {
+  depends_on = [var.auth_depends_on]
   metadata {
     name      = "authservice"
     namespace = var.istio_namespace
@@ -56,7 +58,7 @@ resource "kubernetes_service" "authservice" {
 }
 
 resource "kubernetes_stateful_set" "authservice" {
-  depends_on = [k8s_manifest.oidc_authservice]
+  depends_on = [k8s_manifest.oidc_authservice, var.auth_depends_on]
   metadata {
     name      = "authservice"
     namespace = var.istio_namespace
