@@ -88,14 +88,6 @@ resource "kubernetes_stateful_set" "authservice" {
 
       spec {
         automount_service_account_token = true
-        volume {
-          name = "data"
-
-          persistent_volume_claim {
-            claim_name = "authservice"
-          }
-        }
-
         container {
           name  = "authservice"
           image = "gcr.io/arrikto/kubeflow/oidc-authservice:28c59ef"
