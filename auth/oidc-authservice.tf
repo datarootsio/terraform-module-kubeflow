@@ -92,7 +92,7 @@ resource "kubernetes_stateful_set" "authservice" {
           name = "data"
 
           persistent_volume_claim {
-            claim_name = "authservice-pvc"
+            claim_name = "authservice"
           }
         }
 
