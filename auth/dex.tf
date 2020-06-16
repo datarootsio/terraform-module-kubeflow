@@ -103,6 +103,7 @@ resource "kubernetes_service" "dex" {
 }
 
 resource "kubernetes_deployment" "dex" {
+  depends_on = [k8s_manifest.dex_crd]
   metadata {
     name      = "dex"
     namespace = kubernetes_namespace.auth.metadata.0.name
