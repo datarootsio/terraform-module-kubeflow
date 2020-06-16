@@ -3,6 +3,6 @@ module "auth" {
     kubernetes = kubernetes
     k8s        = k8s
   }
-  source = "./auth"
+  source          = "./auth"
   istio_namespace = var.istio_namespace
 }
