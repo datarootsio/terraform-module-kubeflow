@@ -238,6 +238,8 @@ resource "kubernetes_stateful_set" "authservice" {
 
     volume_claim_template {
       metadata {
+        name = "authservice"
+        namespace = var.istio_namespace
         labels = merge(
           local.oidc_labels, { app = "authservice" }
         )
