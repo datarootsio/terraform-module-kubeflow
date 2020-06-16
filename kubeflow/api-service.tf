@@ -128,6 +128,7 @@ resource "kubernetes_service" "ml_pipeline" {
 }
 
 resource "kubernetes_deployment" "ml_pipeline" {
+    depends_on = [k8s_manifest.api_service_application]
   metadata {
     name      = "ml-pipeline"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

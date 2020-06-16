@@ -9,8 +9,9 @@ locals {
 }
 
 resource "k8s_manifest" "dex_crd" {
-  count   = length(local.dex_crd_manifests)
-  content = local.dex_crd_manifests[count.index]
+  depends_on = [var.auth_depends_on]
+  count      = length(local.dex_crd_manifests)
+  content    = local.dex_crd_manifests[count.index]
 }
 
 resource "kubernetes_service_account" "dex" {
@@ -102,6 +103,7 @@ resource "kubernetes_service" "dex" {
 }
 
 resource "kubernetes_deployment" "dex" {
+  depends_on = [k8s_manifest.dex_crd]
   metadata {
     name      = "dex"
     namespace = kubernetes_namespace.auth.metadata.0.name
