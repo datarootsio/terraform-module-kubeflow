@@ -216,7 +216,7 @@ resource "kubernetes_stateful_set" "authservice" {
           }
 
           volume_mount {
-            name       = "data"
+            name       = "authservice"
             mount_path = "/var/lib/authservice"
           }
 
