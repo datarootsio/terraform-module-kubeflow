@@ -8,5 +8,5 @@ module "kubeflow" {
   use_cert_manager    = var.use_cert_manager
   certificate_name    = var.certificate_name
   istio_namespace     = var.istio_namespace
-  kubeflow_depends_on = module.istio.wait_for_crds
+  kubeflow_depends_on = [module.istio.wait_for_crds, null_resource.apply_crd]
 }
