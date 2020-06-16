@@ -101,7 +101,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "USERID_HEADER"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "userid-header"
               }
             }
@@ -111,7 +111,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "USERID_PREFIX"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "userid-prefix"
               }
             }
@@ -121,7 +121,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "USERID_CLAIM"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "userid-claim"
               }
             }
@@ -131,7 +131,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "OIDC_PROVIDER"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "oidc_provider"
               }
             }
@@ -141,7 +141,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "OIDC_AUTH_URL"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "oidc_auth_url"
               }
             }
@@ -151,7 +151,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "OIDC_SCOPES"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "oidc_scopes"
               }
             }
@@ -161,7 +161,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "REDIRECT_URI"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "oidc_redirect_uri"
               }
             }
@@ -171,7 +171,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "SKIP_AUTH_URI"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "skip_auth_uri"
               }
             }
@@ -186,7 +186,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "CLIENT_ID"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "client_id"
               }
             }
@@ -196,7 +196,7 @@ resource "kubernetes_stateful_set" "authservice" {
             name = "CLIENT_SECRET"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.dex.metadata.0.name
+                name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
                 key  = "application_secret"
               }
             }
