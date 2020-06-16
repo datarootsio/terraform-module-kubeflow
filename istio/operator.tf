@@ -57,7 +57,6 @@ resource "kubernetes_deployment" "istio_operator" {
 
           env {
             name = "POD_NAME"
-
             value_from {
               field_ref {
                 field_path = "metadata.name"

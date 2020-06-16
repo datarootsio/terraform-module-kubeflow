@@ -13,8 +13,7 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
   metadata {
     name      = "oidc-authservice-parameters"
     namespace = var.istio_namespace
-
-    labels = local.oidc_labels
+    labels    = local.oidc_labels
   }
 
   data = {
@@ -257,18 +256,20 @@ resource "kubernetes_stateful_set" "authservice" {
 }
 
 locals {
-  oidc_authservice_manifests = split("\n---\n", templatefile(
-    "${path.module}/manifests/oidc-authservice.yaml",
-    {
-      istio_namespace = var.istio_namespace
-      labels          = local.oidc_labels
-    }
+  oidc_authservice_manifests = split(
+    "\n---\n",
+    templatefile(
+      "${path.module}/manifests/oidc-authservice.yaml",
+      {
+        istio_namespace = var.istio_namespace
+        labels          = local.oidc_labels
+      }
     )
   )
 }
 
 resource "k8s_manifest" "oidc_authservice" {
   depends_on = [var.auth_depends_on]
-  count   = length(local.oidc_authservice_manifests)
-  content = local.oidc_authservice_manifests[count.index]
+  count      = length(local.oidc_authservice_manifests)
+  content    = local.oidc_authservice_manifests[count.index]
 }
