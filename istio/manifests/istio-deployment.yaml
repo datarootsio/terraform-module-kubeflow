@@ -4,8 +4,18 @@ metadata:
   namespace: ${namespace}
   name: ${namespace}-control-plane
 spec:
+  values:
+    global:
+      proxy:
+        autoInject: disabled
+      useMCP: false
+      # The third-party-jwt is not enabled on all k8s.
+      # See: https://istio.io/docs/ops/best-practices/security/#configure-third-party-service-account-tokens
+      jwtPolicy: first-party-jwt
   profile: default
   addonComponents:
+    pilot:
+      enabled: true
     grafana:
       enabled: true
     kiali:
@@ -18,6 +28,11 @@ spec:
     ingressGateways:
     - name: istio-ingressgateway
       enabled: true
+    - name: cluster-local-gateway
+      enabled: true
+      label:
+        istio: cluster-local-gateway
+        app: cluster-local-gateway
       k8s:
         serviceAnnotations:
 %{ for key,value in annotations ~}
