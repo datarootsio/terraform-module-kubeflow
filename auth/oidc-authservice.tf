@@ -2,10 +2,10 @@ locals {
   oidc_labels = {
     "app.kubernetes.io/managed-by" = "terraform"
     "app.kubernetes.io/part-of"    = "kubeflow"
-    "app.kubernetes.io/component"  = "api-service"
-    "app.kubernetes.io/name"       = "api-service"
-    "app.kubernetes.io/instance"   = "api-service-0.2.5"
-    "app.kubernetes.io/version"    = "0.2.5"
+    "app.kubernetes.io/component"  = "oidc-authservice"
+    "app.kubernetes.io/name"       = "oidc-authservice"
+    "app.kubernetes.io/instance"   = "oidc-authservice-v1.0.0"
+    "app.kubernetes.io/version"    = "v1.0.0"
   }
 }
 
