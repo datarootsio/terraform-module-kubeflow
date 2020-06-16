@@ -261,6 +261,7 @@ locals {
     "${path.module}/manifests/oidc-authservice.yaml",
     {
       istio_namespace = var.istio_namespace
+      label           = local.oidc_labels
     }
     )
   )
