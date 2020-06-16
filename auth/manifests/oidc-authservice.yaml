@@ -1,0 +1,83 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  labels:
+%{ for key,value in labels ~}
+    ${key}: ${value}
+%{ endfor ~}
+  name: oidc-authservice
+  namespace: ${istio_namespace}
+spec:
+  addOwnerRef: true
+  componentKinds:
+  - group: apps
+    kind: StatefulSet
+  - group: core
+    kind: Service
+  - group: core
+    kind: PersistentVolumeClaim
+  - group: networking.istio.io
+    kind: EnvoyFilter
+  descriptor:
+    description: Provides OIDC-based authentication for Kubeflow Applications, at
+      the Istio Gateway.
+    keywords:
+    - oidc
+    - authservice
+    - authentication
+    links:
+    - description: About
+      url: https://github.com/kubeflow/kubeflow/tree/master/components/oidc-authservice
+    - description: Docs
+      url: https://www.kubeflow.org/docs/started/k8s/kfctl-existing-arrikto
+    maintainers:
+    - email: yanniszark@arrikto.com
+      name: Yannis Zarkadas
+    owners:
+    - email: yanniszark@arrikto.com
+      name: Yannis Zarkadas
+    type: oidc-authservice
+    version: v1beta1
+  selector:
+    matchLabels:
+%{ for key,value in labels ~}
+      ${key}: ${value}
+%{ endfor ~}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  labels:
+%{ for key,value in labels ~}
+    ${key}: ${value}
+%{ endfor ~}
+  name: authn-filter
+  namespace: ${istio_namespace}
+spec:
+  filters:
+  - filterConfig:
+      httpService:
+        authorizationRequest:
+          allowedHeaders:
+            patterns:
+            - exact: cookie
+            - exact: X-Auth-Token
+        authorizationResponse:
+          allowedUpstreamHeaders:
+            patterns:
+            - exact: kubeflow-userid
+        serverUri:
+          cluster: outbound|8080||authservice.${istio_namespace}.svc.cluster.local
+          failureModeAllow: false
+          timeout: 10s
+          uri: http://authservice.${istio_namespace}.svc.cluster.local
+      statusOnError:
+        code: GatewayTimeout
+    filterName: envoy.ext_authz
+    filterType: HTTP
+    insertPosition:
+      index: FIRST
+    listenerMatch:
+      listenerType: GATEWAY
+  workloadLabels:
+    istio: ingressgateway

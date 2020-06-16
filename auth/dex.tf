@@ -56,26 +56,6 @@ resource "kubernetes_cluster_role_binding" "dex" {
   }
 }
 
-resource "kubernetes_config_map" "dex_parameters" {
-  metadata {
-    name      = "dex-parameters"
-    namespace = kubernetes_namespace.auth.metadata.0.name
-  }
-
-  data = {
-    application_secret   = "pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok"
-    client_id            = "kubeflow-oidc-authservice"
-    dex_domain           = "dex.example.com"
-    issuer               = "http://dex.auth.svc.cluster.local:5556/dex"
-    namespace            = kubernetes_namespace.auth.metadata.0.name
-    oidc_redirect_uris   = "[\"/login/oidc\"]"
-    static_email         = "admin@kubeflow.org"
-    static_password_hash = "$2y$12$ruoM7FqXrpVgaol44eRZW.4HWS8SAvg6KYVVSCIwKQPBmTpCm.EeO"
-    static_user_id       = "08a8684b-db88-4b73-90a9-3cd1661f5466"
-    static_username      = "admin"
-  }
-}
-
 resource "kubernetes_secret" "dex" {
   metadata {
     name      = "dex"
@@ -83,7 +63,18 @@ resource "kubernetes_secret" "dex" {
   }
 
   data = {
-    "config.yaml" = templatefile("${path.module}/configs/dex.yaml", {})
+    "config.yaml" = templatefile("${path.module}/configs/dex.yaml", {
+      application_secret   = var.application_secret
+      client_id            = var.client_id
+      dex_domain           = "dex.example.com"
+      issuer               = var.issuer
+      namespace            = kubernetes_namespace.auth.metadata.0.name
+      oidc_redirect_uris   = "[\"${var.oidc_redirect_uri}\"]"
+      static_email         = var.static_email
+      static_password_hash = var.static_password_hash
+      static_user_id       = var.static_user_id
+      static_username      = var.static_username
+    })
   }
 }
 
