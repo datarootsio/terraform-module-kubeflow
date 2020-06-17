@@ -27,8 +27,8 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
     skip_auth_uri      = "/dex"
     userid-header      = "kubeflow-userid"
     userid-prefix      = ""
-    userid-claim       = "profile,groups,email"
-    oidc_scopes        = "email"
+    userid-claim       = "email"
+    oidc_scopes        = "profile groups email"
   }
 }
 
