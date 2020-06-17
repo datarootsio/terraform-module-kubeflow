@@ -38,7 +38,7 @@ resource "kubernetes_service" "ml_pipeline_ml_pipeline_visualizationserver" {
 
 resource "kubernetes_deployment" "ml_pipeline_ml_pipeline_visualizationserver" {
   timeouts {
-    create = "20 minutes"
+    create = "20m"
   }
   depends_on = [k8s_manifest.pipeline_visualization_service_application]
   metadata {
