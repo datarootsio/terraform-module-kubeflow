@@ -195,7 +195,7 @@ resource "kubernetes_service" "metadata_grpc_service" {
       port     = 8080
     }
 
-    labels = merge(
+    selector = merge(
       local.labels_metadata,
       { component = "grpc-server" }
     )
@@ -221,7 +221,7 @@ resource "kubernetes_service" "metadata_service" {
       port     = 8080
     }
 
-    labels = merge(
+    selector = merge(
       local.labels_metadata,
       { component = "server" }
     )
@@ -246,7 +246,7 @@ resource "kubernetes_service" "metadata_ui" {
       target_port = "3000"
     }
 
-    labels = merge(
+    selector = merge(
       local.labels_metadata,
       { app = "metadata-ui" }
     )
