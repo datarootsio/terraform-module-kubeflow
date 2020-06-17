@@ -23,12 +23,12 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
     namespace          = var.istio_namespace
     oidc_auth_url      = "/dex/auth"
     oidc_provider      = var.issuer
-    oidc_redirect_uri  = var.oidc_redirect_uri
+    oidc_redirect_url  = var.oidc_redirect_url
     skip_auth_uri      = "/dex"
     userid-header      = "kubeflow-userid"
     userid-prefix      = ""
-    userid-claim       = "openid profile email"
-    oidc_scopes        = "profile email groups"
+    userid-claim       = "email"
+    oidc_scopes        = "profile groups email"
   }
 }
 
@@ -158,11 +158,11 @@ resource "kubernetes_stateful_set" "authservice" {
           }
 
           env {
-            name = "REDIRECT_URI"
+            name = "REDIRECT_URL"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.oidc_authservice_parameters.metadata.0.name
-                key  = "oidc_redirect_uri"
+                key  = "oidc_redirect_url"
               }
             }
           }
@@ -234,7 +234,7 @@ resource "kubernetes_stateful_set" "authservice" {
 
     volume_claim_template {
       metadata {
-        name = "authservice"
+        name      = "authservice"
         namespace = var.istio_namespace
         labels = merge(
           local.oidc_labels, { app = "authservice" }

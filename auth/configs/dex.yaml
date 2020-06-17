@@ -18,6 +18,7 @@ staticPasswords:
   userID: ${static_user_id}
 staticClients:
 - id: ${client_id}
-  redirectURIs: ${oidc_redirect_uris}
+  redirectURIs:
+    - ${oidc_redirect_uri}
   name: 'Dex Login Application'
   secret: ${application_secret}

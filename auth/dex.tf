@@ -2,7 +2,7 @@ locals {
   dex_crd_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/dex-crd.yaml",
     {
-      namespace = kubernetes_namespace.auth.metadata.0.name,
+      namespace   = kubernetes_namespace.auth.metadata.0.name,
       domain_name = var.domain_name
     }
     )
@@ -68,14 +68,14 @@ resource "kubernetes_secret" "dex" {
     "config.yaml" = templatefile("${path.module}/configs/dex.yaml", {
       application_secret   = var.application_secret
       client_id            = var.client_id
-      dex_domain           = "dex.example.com"
       issuer               = var.issuer
       namespace            = kubernetes_namespace.auth.metadata.0.name
-      oidc_redirect_uris   = "[\"${var.oidc_redirect_uri}\"]"
+      oidc_redirect_uri   = var.oidc_redirect_url
       static_email         = var.static_email
       static_password_hash = var.static_password_hash
       static_user_id       = var.static_user_id
       static_username      = var.static_username
+      domain_name          = var.domain_name
     })
   }
 }

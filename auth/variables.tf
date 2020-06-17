@@ -17,7 +17,7 @@ variable "issuer" {
   default = "http://dex.auth.svc.cluster.local:5556/dex"
 }
 
-variable "oidc_redirect_uri" {
+variable "oidc_redirect_url" {
   type    = string
   default = "/login/oidc"
 }
