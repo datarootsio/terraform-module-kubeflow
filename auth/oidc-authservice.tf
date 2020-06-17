@@ -228,6 +228,10 @@ resource "kubernetes_stateful_set" "authservice" {
       }
     }
 
+    update_strategy {
+      type = "RollingUpdate"
+    }
+
     volume_claim_template {
       metadata {
         name = "authservice"
