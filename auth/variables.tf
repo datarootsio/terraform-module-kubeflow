@@ -1,3 +1,7 @@
+variable "domain_name" {
+  type = string
+}
+
 variable "application_secret" {
   type    = string
   default = "pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok"

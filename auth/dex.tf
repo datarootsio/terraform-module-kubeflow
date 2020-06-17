@@ -3,6 +3,7 @@ locals {
     "${path.module}/manifests/dex-crd.yaml",
     {
       namespace = kubernetes_namespace.auth.metadata.0.name,
+      domain_name = var.domain_name
     }
     )
   )
