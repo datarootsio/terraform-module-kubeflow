@@ -197,19 +197,16 @@ resource "kubernetes_config_map" "inferenceservice_config" {
   }
 
   data = {
-    credentials = "{\n   \"gcs\": {\n       \"gcsCredentialFileName\": \"gcloud-application-credentials.json\"\n   },\n   \"s3\": {\n       \"s3AccessKeyIDName\": \"awsAccessKeyID\",\n       \"s3SecretAccessKeyName\": \"awsSecretAccessKey\"\n   }\n}"
-
-    explainers = "{\n    \"alibi\": {\n        \"image\" : \"gcr.io/kfserving/alibi-explainer\",\n        \"defaultImageVersion\": \"0.2.2\",\n        \"allowedImageVersions\": [\n           \"0.2.2\"\n        ]\n    }\n}"
-
-    ingress = "{\n    \"ingressGateway\" : \"knative-ingress-gateway.knative-serving\",\n    \"ingressService\" : \"kfserving-ingressgateway.istio-system.svc.cluster.local\"\n}"
-
-    logger = "{\n    \"image\" : \"gcr.io/kfserving/logger:0.2.2\",\n    \"memoryRequest\": \"100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"100m\",\n    \"cpuLimit\": \"1\"\n}"
-
-    predictors = "{\n    \"tensorflow\": {\n        \"image\": \"tensorflow/serving\",\n        \"defaultImageVersion\": \"1.14.0\",\n        \"defaultGpuImageVersion\": \"1.14.0-gpu\",\n        \"allowedImageVersions\": [\n           \"1.11.0\",\n           \"1.11.0-gpu\",\n           \"1.12.0\",\n           \"1.12.0-gpu\",\n           \"1.13.0\",\n           \"1.13.0-gpu\",\n           \"1.14.0\",\n           \"1.14.0-gpu\"\n        ]\n    },\n    \"onnx\": {\n        \"image\": \"mcr.microsoft.com/onnxruntime/server\",\n        \"defaultImageVersion\": \"v0.5.1\",\n        \"allowedImageVersions\": [\n           \"v0.5.1\"\n        ]\n    },\n    \"sklearn\": {\n        \"image\": \"gcr.io/kfserving/sklearnserver\",\n        \"defaultImageVersion\": \"0.2.2\",\n        \"allowedImageVersions\": [\n           \"0.2.2\"\n        ]\n    },\n    \"xgboost\": {\n        \"image\": \"gcr.io/kfserving/xgbserver\",\n        \"defaultImageVersion\": \"0.2.2\",\n        \"allowedImageVersions\": [\n           \"0.2.2\"\n        ]\n    },\n    \"pytorch\": {\n        \"image\": \"gcr.io/kfserving/pytorchserver\",\n        \"defaultImageVersion\": \"0.2.2\",\n        \"allowedImageVersions\": [\n           \"0.2.2\"\n        ]\n    },\n    \"tensorrt\": {\n        \"image\": \"nvcr.io/nvidia/tensorrtserver\",\n        \"defaultImageVersion\": \"19.05-py3\",\n        \"allowedImageVersions\": [\n           \"19.05-py3\"\n        ]\n    }\n}"
-
-    storageInitializer = "{\n    \"image\" : \"gcr.io/kfserving/storage-initializer:0.2.2\",\n    \"memoryRequest\": \"100Mi\",\n    \"memoryLimit\": \"1Gi\",\n    \"cpuRequest\": \"100m\",\n    \"cpuLimit\": \"1\"\n}"
-
-    transformers = "{\n}"
+    credentials        = templatefile("${path.module}/configs/knative-credentials.json", {})
+    explainers         = templatefile("${path.module}/configs/knative-explainers.json", {})
+    logger             = templatefile("${path.module}/configs/knative-logger.json", {})
+    predictors         = templatefile("${path.module}/configs/knative-predictors.json", {})
+    storageInitializer = templatefile("${path.module}/configs/knative-storage-initializer.json", {})
+    transformers       = templatefile("${path.module}/configs/knative-transformers.json", {})
+    ingress = templatefile(
+      "${path.module}/configs/knative-ingress.json",
+      { istio_namespace = var.istio_namespace }
+    )
   }
 }
 
