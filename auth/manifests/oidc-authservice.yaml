@@ -54,30 +54,38 @@ metadata:
   name: authn-filter
   namespace: ${istio_namespace}
 spec:
-  filters:
-  - filterConfig:
-      httpService:
-        authorizationRequest:
-          allowedHeaders:
-            patterns:
-            - exact: cookie
-            - exact: X-Auth-Token
-        authorizationResponse:
-          allowedUpstreamHeaders:
-            patterns:
-            - exact: kubeflow-userid
-        serverUri:
-          cluster: outbound|8080||authservice.${istio_namespace}.svc.cluster.local
-          failureModeAllow: false
-          timeout: 10s
-          uri: http://authservice.${istio_namespace}.svc.cluster.local
-      statusOnError:
-        code: GatewayTimeout
-    filterName: envoy.ext_authz
-    filterType: HTTP
-    insertPosition:
-      index: FIRST
-    listenerMatch:
-      listenerType: GATEWAY
-  workloadLabels:
-    istio: ingressgateway
+  workloadSelector:
+    labels:
+      istio: ingressgateway
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: "envoy.router"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.ext_authz
+        config:
+          http_service:
+            server_uri:
+              uri: http://authservice.${istio_namespace}.svc.cluster.local
+              cluster: outbound|8080||authservice.${istio_namespace}.svc.cluster.local
+              failure_mode_allow: false
+              timeout: 10s
+            authorization_request:
+              allowed_headers:
+                patterns:
+                - exact: "cookie"
+                - exact: "X-Auth-Token"
+            authorization_response:
+              allowed_upstream_headers:
+                patterns:
+                - exact: "kubeflow-userid"
+          status_on_error:
+            code: GatewayTimeout
