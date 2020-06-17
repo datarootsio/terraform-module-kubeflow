@@ -173,7 +173,7 @@ metadata:
     ${key}: ${value}
 %{ endfor ~}
   name: profiles
-  namespace: kubeflow
+  namespace: ${namespace}
 spec:
   addOwnerRef: true
   componentKinds:
