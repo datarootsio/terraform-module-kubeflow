@@ -14,6 +14,7 @@ module "auth" {
     k8s        = k8s
   }
   source          = "./auth"
+  domain_name     = var.domain_name
   istio_namespace = var.istio_namespace
   auth_depends_on = module.istio.wait_for_crds
 }
