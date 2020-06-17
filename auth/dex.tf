@@ -70,7 +70,7 @@ resource "kubernetes_secret" "dex" {
       client_id            = var.client_id
       issuer               = var.issuer
       namespace            = kubernetes_namespace.auth.metadata.0.name
-      oidc_redirect_uris   = var.oidc_redirect_uri
+      oidc_redirect_uri   = var.oidc_redirect_url
       static_email         = var.static_email
       static_password_hash = var.static_password_hash
       static_user_id       = var.static_user_id
