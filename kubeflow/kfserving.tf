@@ -197,14 +197,14 @@ resource "kubernetes_config_map" "inferenceservice_config" {
   }
 
   data = {
-    credentials        = templatefile("${path.module}/configs/knative-credentials.json", {})
-    explainers         = templatefile("${path.module}/configs/knative-explainers.json", {})
-    logger             = templatefile("${path.module}/configs/knative-logger.json", {})
-    predictors         = templatefile("${path.module}/configs/knative-predictors.json", {})
-    storageInitializer = templatefile("${path.module}/configs/knative-storage-initializer.json", {})
-    transformers       = templatefile("${path.module}/configs/knative-transformers.json", {})
+    credentials        = templatefile("${path.module}/configs/kfserving-credentials.json", {})
+    explainers         = templatefile("${path.module}/configs/kfserving-explainers.json", {})
+    logger             = templatefile("${path.module}/configs/kfserving-logger.json", {})
+    predictors         = templatefile("${path.module}/configs/kfserving-predictors.json", {})
+    storageInitializer = templatefile("${path.module}/configs/kfserving-storage-initializer.json", {})
+    transformers       = templatefile("${path.module}/configs/kfserving-transformers.json", {})
     ingress = templatefile(
-      "${path.module}/configs/knative-ingress.json",
+      "${path.module}/configs/kfserving-ingress.json",
       { istio_namespace = var.istio_namespace }
     )
   }
