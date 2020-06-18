@@ -464,6 +464,7 @@ resource "kubernetes_deployment" "metadata_envoy_deployment" {
 }
 
 resource "kubernetes_deployment" "metadata_grpc_deployment" {
+  depends_on = [k8s_manifest.metadata_application_vs, kubernetes_deployment.metadata_db]
   metadata {
     name      = "metadata-grpc-deployment"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

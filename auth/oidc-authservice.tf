@@ -23,7 +23,7 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
     namespace          = var.istio_namespace
     oidc_auth_url      = var.oidc_auth_url
     oidc_provider      = var.issuer
-    oidc_redirect_url  = "https://kubeflow.${var.domain_name}${var.oidc_redirect_url}"
+    oidc_redirect_url  = var.oidc_redirect_url
     skip_auth_uri      = "/dex"
     userid-header      = "kubeflow-userid"
     userid-prefix      = ""
