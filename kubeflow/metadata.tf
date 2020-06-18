@@ -336,7 +336,7 @@ resource "kubernetes_deployment" "metadata_db" {
 }
 
 resource "kubernetes_deployment" "metadata_deployment" {
-  depends_on = [k8s_manifest.metadata_application_vs]
+  depends_on = [k8s_manifest.metadata_application_vs, kubernetes_deployment.metadata_db]
   timeouts {
     create = "20m"
   }
