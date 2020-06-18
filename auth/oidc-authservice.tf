@@ -21,13 +21,13 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
     application_secret = var.application_secret
     client_id          = var.client_id
     namespace          = var.istio_namespace
-    oidc_auth_url      = "/dex/auth"
+    oidc_auth_url      = var.oidc_auth_url
     oidc_provider      = var.issuer
-    oidc_redirect_url  = var.oidc_redirect_url
+    oidc_redirect_url  = "https://kubeflow.${var.domain_name}${var.oidc_redirect_url}"
     skip_auth_uri      = "/dex"
     userid-header      = "kubeflow-userid"
     userid-prefix      = ""
-    userid-claim       = "email"
+    userid-claim       = var.userid_claim
     oidc_scopes        = "profile groups email"
   }
 }
