@@ -28,11 +28,6 @@ spec:
     ingressGateways:
     - name: istio-ingressgateway
       enabled: true
-    - name: cluster-local-gateway
-      enabled: true
-      label:
-        istio: cluster-local-gateway
-        app: cluster-local-gateway
       k8s:
         serviceAnnotations:
 %{ for key,value in annotations ~}
@@ -52,4 +47,9 @@ spec:
             port: 443
           - name: tls
             port: 15443
+    - name: cluster-local-gateway
+      enabled: true
+      label:
+        istio: cluster-local-gateway
+        app: cluster-local-gateway
 %{ endif ~}
