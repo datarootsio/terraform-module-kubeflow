@@ -48,11 +48,22 @@ spec:
           - name: tls
             port: 15443
 %{ endif ~}
+    - name: custom-ingressgateway
+      enabled: true
+      label:
+        istio: custom-gateway
     - name: cluster-local-gateway
       enabled: true
       label:
         istio: cluster-local-gateway
         app: cluster-local-gateway
       k8s:
-        serviceAnnotations:
-          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        service:
+          type: ClusterIP
+          ports:
+          - port: 15020
+            name: status-port
+          - port: 80
+            name: http2
+          - port: 443
+            name: https
