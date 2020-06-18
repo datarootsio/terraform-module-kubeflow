@@ -48,10 +48,6 @@ spec:
           - name: tls
             port: 15443
 %{ endif ~}
-    - name: custom-ingressgateway
-      enabled: true
-      label:
-        istio: custom-gateway
     - name: cluster-local-gateway
       enabled: true
       label:

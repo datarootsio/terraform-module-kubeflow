@@ -3,10 +3,3 @@ kind: KnativeServing
 metadata:
   name: knative-serving
   namespace: ${namespace}
-spec:
-  knative-ingress-gateway:
-    selector:
-      custom: ingressgateway
-  config:
-    istio:
-      gateway.knative-serving.knative-ingress-gateway: "custom-ingressgateway.istio-system.svc.cluster.local"
