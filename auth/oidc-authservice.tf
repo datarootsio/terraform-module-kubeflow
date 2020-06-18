@@ -24,7 +24,7 @@ resource "kubernetes_secret" "oidc_authservice_parameters" {
     oidc_auth_url      = var.oidc_auth_url
     oidc_provider      = var.issuer
     oidc_redirect_url  = var.oidc_redirect_url
-    skip_auth_uri      = "/dex,/.well-known"
+    skip_auth_uri      = "/dex/ /.well-known/"
     userid-header      = "kubeflow-userid"
     userid-prefix      = ""
     userid-claim       = var.userid_claim
