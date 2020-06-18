@@ -4,7 +4,6 @@ resource "kubernetes_namespace" "istio_operator" {
 
     labels = {
       istio-injection = "disabled"
-
       istio-operator-managed = "Reconcile"
     }
   }

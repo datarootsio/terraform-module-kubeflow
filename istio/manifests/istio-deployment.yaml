@@ -47,9 +47,12 @@ spec:
             port: 443
           - name: tls
             port: 15443
+%{ endif ~}
     - name: cluster-local-gateway
       enabled: true
       label:
         istio: cluster-local-gateway
         app: cluster-local-gateway
-%{ endif ~}
+      k8s:
+        serviceAnnotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
