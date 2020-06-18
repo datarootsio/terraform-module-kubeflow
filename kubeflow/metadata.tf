@@ -337,6 +337,9 @@ resource "kubernetes_deployment" "metadata_db" {
 
 resource "kubernetes_deployment" "metadata_deployment" {
   depends_on = [k8s_manifest.metadata_application_vs]
+  timeouts {
+    create = "20m"
+  }
   metadata {
     name      = "metadata-deployment"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name

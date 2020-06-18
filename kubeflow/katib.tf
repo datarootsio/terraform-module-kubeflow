@@ -472,6 +472,9 @@ resource "kubernetes_deployment" "katib_controller" {
 
 resource "kubernetes_deployment" "katib_db_manager" {
   depends_on = [k8s_manifest.katib_crd_application_vs, kubernetes_deployment.katib_mysql]
+  timeouts {
+    create = "20m"
+  }
   metadata {
     name      = "katib-db-manager"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name
