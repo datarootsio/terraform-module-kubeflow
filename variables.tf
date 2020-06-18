@@ -59,12 +59,12 @@ variable "oidc_client_secret" {
 }
 
 variable "oidc_userid_claim" {
-  type = string
+  type    = string
   default = "email"
 }
 
 variable "oidc_auth_url" {
-  type = string
+  type    = string
   default = "/dex/auth"
 }
 
