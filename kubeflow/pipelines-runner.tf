@@ -14,7 +14,7 @@ resource "kubernetes_service_account" "pipeline_runner" {
     name      = "pipeline-runner"
     namespace = kubernetes_namespace.kubeflow.metadata.0.name
     labels = merge(
-      local.labels_pipeline_visualization_service,
+      local.labels_pipelines_runner,
       { app = "pipeline-runner" }
     )
   }
@@ -24,7 +24,7 @@ resource "kubernetes_cluster_role" "pipeline_runner" {
   metadata {
     name = "pipeline-runner"
     labels = merge(
-      local.labels_pipeline_visualization_service,
+      local.labels_pipelines_runner,
       { app = "pipeline-runner" }
     )
   }
@@ -100,7 +100,7 @@ resource "kubernetes_cluster_role_binding" "pipeline_runner" {
   metadata {
     name = "pipeline-runner"
     labels = merge(
-      local.labels_pipeline_visualization_service,
+      local.labels_pipelines_runner,
       { app = "pipeline-runner" }
     )
   }
