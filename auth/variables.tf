@@ -7,6 +7,16 @@ variable "application_secret" {
   default = "pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok"
 }
 
+variable "userid_claim" {
+  type = string
+  default = "email"
+}
+
+variable "oidc_auth_url" {
+  type = string
+  default = "/dex/auth"
+}
+
 variable "client_id" {
   type    = string
   default = "kubeflow-oidc-authservice"

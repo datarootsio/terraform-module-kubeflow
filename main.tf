@@ -13,10 +13,16 @@ module "auth" {
     kubernetes = kubernetes
     k8s        = k8s
   }
-  source          = "./auth"
-  domain_name     = var.domain_name
-  istio_namespace = var.istio_namespace
-  auth_depends_on = module.istio.wait_for_crds
+  source             = "./auth"
+  application_secret = var.oidc_client_secret
+  auth_depends_on    = module.istio.wait_for_crds
+  client_id          = var.oidc_client_id
+  domain_name        = var.domain_name
+  issuer             = var.oidc_issuer
+  istio_namespace    = var.istio_namespace
+  oidc_auth_url      = var.oidc_auth_url
+  oidc_redirect_url  = var.oidc_redirect_url
+  userid_claim       = var.oidc_userid_claim
 }
 
 module "kubeflow" {

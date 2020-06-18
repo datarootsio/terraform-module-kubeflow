@@ -170,31 +170,3 @@ metadata:
   namespace: kubeflow
 spec:
   mode: "OFF"
----
-apiVersion: networking.istio.io/v1alpha3
-kind: EnvoyFilter
-metadata:
-  name: add-user-filter
-  namespace: ${istio_namespace}
-spec:
-  configPatches:
-  - applyTo: HTTP_FILTER
-    match:
-      context: GATEWAY
-      listener:
-        filterChain:
-          filter:
-            name: envoy.http_connection_manager
-        portNumber: 443
-    patch:
-      operation: INSERT_BEFORE
-      value:
-        config:
-          inlineCode: |
-            function envoy_on_request(request_handle)
-                request_handle:headers():add("kubeflow-userid","anonymous@kubeflow.org")
-            end
-        name: envoy.lua
-  workloadSelector:
-    labels:
-      istio: istio-ingressgateway

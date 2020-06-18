@@ -72,4 +72,5 @@ jobs:
           KUBECONFIG: "/etc/rancher/k3s/k3s.yaml"
         run: |
           curl -sfL https://get.k3s.io | sh -s - --disable traefik --disable servicelb
+          kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
           go test -timeout ${{ env.tests_timeout }} ./...

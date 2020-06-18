@@ -45,7 +45,7 @@ resource "kubernetes_config_map" "profiles_profiles_parameters_78m_7_mmbb_5_c" {
   }
 
   data = {
-    admin         = "anonymous"
+    admin         = "admin@kubeflow.org"
     userid-header = "kubeflow-userid"
   }
 }
@@ -110,7 +110,7 @@ resource "kubernetes_deployment" "profiles_deployment" {
           name    = "kfam"
           image   = "gcr.io/kubeflow-images-public/kfam:v1.0.0-gf3e09203"
           command = ["/access-management"]
-          args    = ["-cluster-admin", "anonymous", "-userid-header", "kubeflow-userid", "-userid-prefix", ""]
+          args    = ["-cluster-admin", "admin@kubeflow.org", "-userid-header", "kubeflow-userid", "-userid-prefix", ""]
 
           liveness_probe {
             http_get {
