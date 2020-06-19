@@ -119,7 +119,7 @@ resource "kubernetes_deployment" "ml_pipeline_persistenceagent" {
 
 locals {
   persistent_agent_application_manifests = split("\n---\n", templatefile(
-    "${path.module}/manifests/persistent-agent-application-crd.yaml",
+    "${path.module}/manifests/persistent-agent-application.yaml",
     {
       namespace = kubernetes_namespace.kubeflow.metadata.0.name,
       labels    = local.labels_persistence_agent,
