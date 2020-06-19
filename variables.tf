@@ -18,6 +18,11 @@ variable "cert_manager_namespace" {
   default = "cert-manager"
 }
 
+variable "kfctl_namespace" {
+  type = string
+  default = "kfctl-operator"
+}
+
 variable "cert_manager_version" {
   type    = string
   default = "v0.15.1"

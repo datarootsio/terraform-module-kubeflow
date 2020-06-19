@@ -25,6 +25,7 @@ module "auth" {
   userid_claim       = var.oidc_userid_claim
 }
 
+/*
 module "kubeflow" {
   providers = {
     kubernetes = kubernetes
@@ -45,7 +46,7 @@ module "knative" {
   }
   source             = "./knative"
   knative_depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
-}
+}*/
 
 module "istio" {
   providers = {

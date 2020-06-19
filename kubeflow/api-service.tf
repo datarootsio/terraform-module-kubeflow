@@ -55,7 +55,7 @@ resource "kubernetes_role" "ml_pipeline" {
 resource "kubernetes_role_binding" "ml_pipeline" {
   metadata {
     name      = "ml-pipeline"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
 
     labels = merge(
       local.labels_api_service,
