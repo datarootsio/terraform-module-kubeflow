@@ -13,7 +13,7 @@ locals {
 resource "kubernetes_service_account" "ml_pipeline_persistenceagent" {
   metadata {
     name      = "ml-pipeline-persistenceagent"
-    namespace = "kubeflow"
+    namespace = kubernetes_namespace.kubeflow.metadata.0.name
     labels = merge(
       local.labels_persistence_agent,
       { app = "ml-pipeline-persistenceagent" }
