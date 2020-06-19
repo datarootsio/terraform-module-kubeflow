@@ -6,8 +6,11 @@ resource "kubernetes_namespace" "knative_operator" {
 
 resource "kubernetes_namespace" "knative_serving" {
   metadata {
-    name   = "knative-serving"
-    labels = { "istio-injection" = "enabled" }
+    name = "knative-serving"
+    labels = {
+      "istio-injection"             = "enabled"
+      "serving.knative.dev/release" = "v0.15.0"
+    }
   }
 }
 
