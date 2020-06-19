@@ -83,8 +83,8 @@ resource "kubernetes_deployment" "kubeflow_operator" {
       spec {
         automount_service_account_token = true
         container {
-          name  = "kubeflow-operator"
-          image = "aipipeline/kubeflow-operator:v1.0.0"
+          name    = "kubeflow-operator"
+          image   = "aipipeline/kubeflow-operator:v1.0.0"
           command = ["kfctl"]
 
           env {

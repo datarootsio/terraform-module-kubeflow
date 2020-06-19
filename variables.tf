@@ -19,7 +19,7 @@ variable "cert_manager_namespace" {
 }
 
 variable "kfctl_namespace" {
-  type = string
+  type    = string
   default = "kfctl-operator"
 }
 
