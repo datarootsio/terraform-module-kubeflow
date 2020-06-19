@@ -24,7 +24,7 @@ func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error
 		Vars:               map[string]interface{}{},
 		MaxRetries:         5,
 		TimeBetweenRetries: 5 * time.Minute,
-		NoColor:            true,
+		NoColor:            false,
 		Logger:             logger.TestingT,
 	}
 
@@ -48,11 +48,6 @@ func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 
-	/*	k8sOptions := k8s.NewKubectlOptions("", "", "default")
-		k8s.CreateNamespace(t, k8sOptions, namespace)
-		// website::tag::5::Make sure to delete the namespace at the end of the test
-		defer k8s.DeleteNamespace(t, k8sOptions, namespace)
-	*/
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
 	assert.NoError(t, err)
