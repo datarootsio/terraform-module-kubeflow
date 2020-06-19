@@ -11,6 +11,10 @@ resource "k8s_manifest" "kubeflow_application_crd" {
 }
 
 resource "k8s_manifest" "kubeflow_kfdef" {
+  depends_on = [kubernetes_deployment.kubeflow_operator]
+  timeouts {
+    delete = "60m"
+  }
   content = templatefile("${path.module}/manifests/kubeflow/kfdef.yaml",
     { namespace = kubernetes_namespace.kubeflow.metadata.0.name }
   )
