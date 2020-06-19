@@ -2,6 +2,10 @@ resource "kubernetes_namespace" "kubeflow" {
   depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
   metadata {
     name = "kubeflow"
+    labels = {
+      "control-plane"                    = "kubeflow"
+      "katib-metricscollector-injection" = "enabled"
+    }
   }
 }
 
