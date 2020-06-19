@@ -1,18 +1,18 @@
 
-resource "kubernetes_namespace" "kfctl_operator" {
+resource "kubernetes_namespace" "kubeflow_operator" {
   metadata {
-    name = var.kfctl_namespace
+    name = var.kubeflow_operator_namespace
   }
 }
 
-resource "k8s_manifest" "operator_crd" {
-  content = templatefile("${path.module}/manifests/kfctl/crd.yaml", {})
+resource "k8s_manifest" "kubeflow_operator_crd" {
+  content = templatefile("${path.module}/manifests/kubeflow/operator-crd.yaml", {})
 }
 
 resource "kubernetes_service_account" "kubeflow_operator" {
   metadata {
     name      = "kubeflow-operator"
-    namespace = kubernetes_namespace.kfctl_operator.metadata.0.name
+    namespace = kubernetes_namespace.kubeflow_operator.metadata.0.name
   }
 }
 
@@ -48,7 +48,7 @@ resource "kubernetes_cluster_role_binding" "kubeflow_operator" {
   subject {
     kind      = "ServiceAccount"
     name      = "kubeflow-operator"
-    namespace = kubernetes_namespace.kfctl_operator.metadata.0.name
+    namespace = kubernetes_namespace.kubeflow_operator.metadata.0.name
   }
 
   role_ref {
@@ -61,7 +61,7 @@ resource "kubernetes_cluster_role_binding" "kubeflow_operator" {
 resource "kubernetes_deployment" "kubeflow_operator" {
   metadata {
     name      = "kubeflow-operator"
-    namespace = kubernetes_namespace.kfctl_operator.metadata.0.name
+    namespace = kubernetes_namespace.kubeflow_operator.metadata.0.name
   }
 
   spec {

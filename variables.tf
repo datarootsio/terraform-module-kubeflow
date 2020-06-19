@@ -18,9 +18,9 @@ variable "cert_manager_namespace" {
   default = "cert-manager"
 }
 
-variable "kfctl_namespace" {
+variable "kubeflow_operator_namespace" {
   type    = string
-  default = "kfctl-operator"
+  default = "kubeflow-operator"
 }
 
 variable "cert_manager_version" {
