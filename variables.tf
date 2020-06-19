@@ -18,6 +18,11 @@ variable "cert_manager_namespace" {
   default = "cert-manager"
 }
 
+variable "kubeflow_operator_namespace" {
+  type    = string
+  default = "kubeflow-operator"
+}
+
 variable "cert_manager_version" {
   type    = string
   default = "v0.15.1"

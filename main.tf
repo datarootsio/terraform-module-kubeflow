@@ -15,7 +15,7 @@ module "auth" {
   }
   source             = "./auth"
   application_secret = var.oidc_client_secret
-  auth_depends_on    = module.istio.wait_for_crds
+  auth_depends_on    = [module.istio.wait_for_crds, k8s_manifest.kubeflow_application_crd]
   client_id          = var.oidc_client_id
   domain_name        = var.domain_name
   issuer             = var.oidc_issuer
@@ -25,6 +25,7 @@ module "auth" {
   userid_claim       = var.oidc_userid_claim
 }
 
+/*
 module "kubeflow" {
   providers = {
     kubernetes = kubernetes
@@ -45,7 +46,7 @@ module "knative" {
   }
   source             = "./knative"
   knative_depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
-}
+}*/
 
 module "istio" {
   providers = {
