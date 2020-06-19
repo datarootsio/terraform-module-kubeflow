@@ -47,7 +47,7 @@ resource "kubernetes_cluster_role_binding" "kubeflow_operator" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = "kubeflow-operator"
+    name      = kubernetes_service_account.kubeflow_operator.metadata.0.name
     namespace = kubernetes_namespace.kubeflow_operator.metadata.0.name
   }
 
@@ -59,6 +59,7 @@ resource "kubernetes_cluster_role_binding" "kubeflow_operator" {
 }
 
 resource "kubernetes_deployment" "kubeflow_operator" {
+  depends_on = [k8s_manifest.kubeflow_operator_crd, kubernetes_cluster_role_binding.kubeflow_operator]
   metadata {
     name      = "kubeflow-operator"
     namespace = kubernetes_namespace.kubeflow_operator.metadata.0.name

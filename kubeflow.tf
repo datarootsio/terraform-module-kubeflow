@@ -15,9 +15,9 @@ resource "k8s_manifest" "kubeflow_application_crd" {
 }
 
 resource "k8s_manifest" "kubeflow_kfdef" {
-  depends_on = [kubernetes_deployment.kubeflow_operator]
+  depends_on = [kubernetes_deployment.kubeflow_operator, k8s_manifest.kubeflow_application_crd]
   timeouts {
-    delete = "60m"
+    delete = "5m"
   }
   content = templatefile("${path.module}/manifests/kubeflow/kfdef.yaml",
     { namespace = kubernetes_namespace.kubeflow.metadata.0.name }
@@ -38,8 +38,8 @@ locals {
   )
 }
 
-resource "k8s_manifest" "centraldashboard_application_vs" {
-  depends_on = [kubernetes_deployment.kubeflow_operator]
+resource "k8s_manifest" "kubeflow_ingress_vs" {
+  depends_on = [kubernetes_deployment.kubeflow_operator, module.istio.wait_for_crds, k8s_manifest.kubeflow_application_crd]
   count      = length(local.kubeflow_ingress_vs_manifests)
   content    = local.kubeflow_ingress_vs_manifests[count.index]
 }
