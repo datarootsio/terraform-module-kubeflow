@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "kfctl_operator" {
 }
 
 resource "k8s_manifest" "operator_crd" {
-  content = templatefile("${path.module}/manifests/kfctl/operator-crd.yaml", {})
+  content = templatefile("${path.module}/manifests/kfctl/crd.yaml", {})
 }
 
 resource "kubernetes_service_account" "kubeflow_operator" {
