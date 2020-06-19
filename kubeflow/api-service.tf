@@ -156,7 +156,6 @@ resource "kubernetes_deployment" "ml_pipeline" {
 
       spec {
         automount_service_account_token = true
-
         volume {
           name = "config-volume"
           secret {
