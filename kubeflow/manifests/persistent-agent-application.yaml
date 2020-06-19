@@ -1,4 +1,3 @@
----
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
@@ -7,7 +6,7 @@ metadata:
     ${key}: ${value}
 %{ endfor ~}
   name: persistent-agent
-  namespace: kubeflow
+  namespace: ${namespace}
 spec:
   addOwnerRef: true
   componentKinds:
