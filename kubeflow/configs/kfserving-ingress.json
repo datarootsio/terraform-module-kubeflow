@@ -1,4 +1,0 @@
-{
-    "ingressGateway" : "knative-ingress-gateway.knative-serving",
-    "ingressService" : "kfserving-ingressgateway.${istio_namespace}.svc.cluster.local"
-}

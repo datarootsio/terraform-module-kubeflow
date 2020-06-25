@@ -38,6 +38,11 @@ variable "ingress_gateway_ip" {
   default = ""
 }
 
+variable "ingress_gateway_selector" {
+  type    = string
+  default = "ingressgateway"
+}
+
 variable "domain_name" {
   type    = string
   default = ""

@@ -28,11 +28,12 @@ locals {
   kubeflow_ingress_vs_manifests = split("\n---\n", templatefile(
     "${path.module}/manifests/kubeflow/gateway-vs.yaml",
     {
-      credential_name  = var.certificate_name,
-      domain_name      = var.domain_name,
-      istio_namespace  = var.istio_namespace
-      namespace        = kubernetes_namespace.kubeflow.metadata.0.name
-      use_cert_manager = var.use_cert_manager
+      credential_name          = var.certificate_name,
+      domain_name              = var.domain_name,
+      istio_namespace          = var.istio_namespace
+      ingress_gateway_selector = var.ingress_gateway_selector
+      namespace                = kubernetes_namespace.kubeflow.metadata.0.name
+      use_cert_manager         = var.use_cert_manager
     }
     )
   )

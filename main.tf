@@ -25,29 +25,6 @@ module "auth" {
   userid_claim       = var.oidc_userid_claim
 }
 
-/*
-module "kubeflow" {
-  providers = {
-    kubernetes = kubernetes
-    k8s        = k8s
-  }
-  source              = "./kubeflow"
-  domain_name         = var.domain_name
-  use_cert_manager    = var.use_cert_manager
-  certificate_name    = var.certificate_name
-  istio_namespace     = var.istio_namespace
-  kubeflow_depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
-}
-
-module "knative" {
-  providers = {
-    kubernetes = kubernetes
-    k8s        = k8s
-  }
-  source             = "./knative"
-  knative_depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
-}*/
-
 module "istio" {
   providers = {
     kubernetes = kubernetes
@@ -58,6 +35,7 @@ module "istio" {
   domain_name                 = var.domain_name
   ingress_gateway_annotations = var.ingress_gateway_annotations
   ingress_gateway_ip          = var.ingress_gateway_ip
+  ingress_gateway_selector    = var.ingress_gateway_selector
   istio_namespace             = var.istio_namespace
   istio_operator_namespace    = var.istio_operator_namespace
   use_cert_manager            = var.use_cert_manager

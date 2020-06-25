@@ -1,3 +1,8 @@
+variable "install_istio" {
+  type = bool
+  default = false
+}
+
 variable "istio_namespace" {
   type    = string
   default = "istio-system"
@@ -11,6 +16,11 @@ variable "istio_operator_namespace" {
 variable "ingress_gateway_annotations" {
   type    = map(string)
   default = {}
+}
+
+variable "ingress_gateway_selector" {
+  type    = string
+  default = "ingressgateway"
 }
 
 variable "ingress_gateway_ip" {

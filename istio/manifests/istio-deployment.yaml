@@ -26,7 +26,7 @@ spec:
       enabled: true
   components:
     ingressGateways:
-    - name: istio-ingressgateway
+    - name: istio-${ingress_gateway_selector}
       enabled: true
       k8s:
         serviceAnnotations:
