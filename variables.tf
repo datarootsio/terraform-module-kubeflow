@@ -39,7 +39,7 @@ variable "ingress_gateway_ip" {
 }
 
 variable "ingress_gateway_selector" {
-  type = string
+  type    = string
   default = "ingressgateway"
 }
 
