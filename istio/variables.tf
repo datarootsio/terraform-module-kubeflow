@@ -1,3 +1,8 @@
+variable "install_istio" {
+  type = bool
+  default = false
+}
+
 variable "istio_namespace" {
   type    = string
   default = "istio-system"
