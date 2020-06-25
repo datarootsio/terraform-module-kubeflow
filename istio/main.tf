@@ -18,9 +18,10 @@ resource "k8s_manifest" "istio_deployment" {
   content = templatefile(
     "${path.module}/manifests/istio-deployment.yaml",
     {
-      namespace   = kubernetes_namespace.istio_namespace.metadata.0.name,
-      annotations = var.ingress_gateway_annotations,
-      lb_ip       = var.ingress_gateway_ip
+      namespace                = kubernetes_namespace.istio_namespace.metadata.0.name,
+      ingress_gateway_selector = var.ingress_gateway_selector
+      annotations              = var.ingress_gateway_annotations,
+      lb_ip                    = var.ingress_gateway_ip
     }
   )
 }

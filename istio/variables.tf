@@ -13,6 +13,11 @@ variable "ingress_gateway_annotations" {
   default = {}
 }
 
+variable "ingress_gateway_selector" {
+  type    = string
+  default = "ingressgateway"
+}
+
 variable "ingress_gateway_ip" {
   type    = string
   default = ""
