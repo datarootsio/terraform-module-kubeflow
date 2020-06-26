@@ -4,7 +4,7 @@ terraform {
       source = "hashicorp/helm"
     }
     k8s = {
-      source = "registry.terraform.local/banzaicloud/k8s"
+      source  = "registry.terraform.local/banzaicloud/k8s"
       version = "0.7.7"
     }
     kubernetes = {
