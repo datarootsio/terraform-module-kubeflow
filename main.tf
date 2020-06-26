@@ -1,9 +1,6 @@
 provider "kubernetes" {}
 
-provider "k8s" {
-  source = "registry.terraform.local/banzaicloud/k8s"
-  version = "0.7.7"
-}
+provider "k8s" {}
 
 provider "helm" {}
 
