@@ -1,3 +1,12 @@
+provider "kubernetes" {}
+
+provider "k8s" {
+  source = "registry.terraform.local/banzaicloud/k8s"
+  version = "0.7.7"
+}
+
+provider "helm" {}
+
 module "auth" {
   providers = {
     kubernetes = kubernetes
