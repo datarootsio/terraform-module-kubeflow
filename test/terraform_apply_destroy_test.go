@@ -34,8 +34,6 @@ func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error
 }
 
 func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
-	t.Parallel()
-
 	_, options, err := getDefaultTerraformOptions(t)
 	assert.NoError(t, err)
 
@@ -47,6 +45,25 @@ func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
 	options.Vars["domain_name"] = "foo.local"
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+
+	defer terraform.Destroy(t, options)
+	_, err = terraform.InitAndApplyE(t, options)
+	assert.NoError(t, err)
+}
+
+func TestApplyAndDestroyWithOnlyPipelines(t *testing.T) {
+	_, options, err := getDefaultTerraformOptions(t)
+	assert.NoError(t, err)
+
+	options.Vars["cert_manager_namespace"] = "cert-manager"
+	options.Vars["istio_operator_namespace"] = "istio-operator"
+	options.Vars["istio_namespace"] = "istio-system"
+	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
+	options.Vars["use_cert_manager"] = true
+	options.Vars["domain_name"] = "foo.local"
+	options.Vars["letsencrypt_email"] = "foo@bar.local"
+	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+	options.Vars["kubeflow_components"] = map[string]{"pipelines"}
 
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
