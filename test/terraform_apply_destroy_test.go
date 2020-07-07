@@ -63,7 +63,7 @@ func TestApplyAndDestroyWithOnlyPipelines(t *testing.T) {
 	options.Vars["domain_name"] = "foo.local"
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
-	options.Vars["kubeflow_components"] = map[string]{"pipelines"}
+	options.Vars["kubeflow_components"] = [string]{"pipelines"}
 
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
