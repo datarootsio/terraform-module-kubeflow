@@ -92,3 +92,8 @@ variable "oidc_redirect_url" {
   type    = string
   default = "/login/oidc"
 }
+
+variable "kubeflow_components" {
+  type    = list
+  default = ["jupyter", "spark", "pytorch", "knative", "spartakus", "tensorflow", "katib", "pipelines", "seldon"]
+}
