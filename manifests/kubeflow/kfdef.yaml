@@ -49,7 +49,7 @@ spec:
         name: manifests
         path: admission-webhook/webhook
     name: webhook
-%{ if contains("jupyter",components) ~}
+%{ if contains(components,"jupyter") ~}
   - kustomizeConfig:
       overlays:
       - istio
@@ -79,7 +79,7 @@ spec:
         path: jupyter/notebook-controller
     name: notebook-controller
 %{ endif }
-%{ if contains("spark",components) ~}
+%{ if contains(components,"spark") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -88,7 +88,7 @@ spec:
         path: spark/spark-operator
     name: spark-operator
 %{ endif }
-%{ if contains("pytorch",components) ~}
+%{ if contains(components,"pytorch") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -104,7 +104,7 @@ spec:
         path: pytorch-job/pytorch-operator
     name: pytorch-operator
 %{ endif }
-%{ if contains("knative",components) ~}
+%{ if contains(components,"knative") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -140,7 +140,7 @@ spec:
         path: kfserving/kfserving-install
     name: kfserving-install
 %{ endif }
-%{ if contains("spartakus",components) ~}
+%{ if contains(components,"spartakus") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -154,7 +154,7 @@ spec:
         path: common/spartakus
     name: spartakus
 %{ endif }
-%{ if contains("tensorflow",components) ~}
+%{ if contains(components,"tensorflow") ~}
   - kustomizeConfig:
       overlays:
       - istio
@@ -177,7 +177,7 @@ spec:
         path: tf-training/tf-job-operator
     name: tf-job-operator
 %{ endif }
-%{ if contains("katib",components) ~}
+%{ if contains(components,"katib") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -194,7 +194,7 @@ spec:
         path: katib/katib-controller
     name: katib-controller
 %{ endif }
-%{ if contains("pipelines",components) ~}
+%{ if contains(components,"pipelines") ~}
   - kustomizeConfig:
       overlays:
       - application
@@ -277,7 +277,7 @@ spec:
         name: manifests
         path: profiles
     name: profiles
-%{ if contains("seldon",components) ~}
+%{ if contains(components,"seldon") ~}
   - kustomizeConfig:
       overlays:
       - application
