@@ -20,7 +20,10 @@ resource "k8s_manifest" "kubeflow_kfdef" {
     delete = "5m"
   }
   content = templatefile("${path.module}/manifests/kubeflow/kfdef.yaml",
-    { namespace = kubernetes_namespace.kubeflow.metadata.0.name }
+    {
+      namespace  = kubernetes_namespace.kubeflow.metadata.0.name,
+      components = var.kubeflow_components
+    }
   )
 }
 
