@@ -6,11 +6,6 @@ metadata:
 spec:
   applications:
   - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: application/application-crds
-    name: application-crds
-  - kustomizeConfig:
       overlays:
       - application
       repoRef:
