@@ -43,6 +43,11 @@ variable "ingress_gateway_selector" {
   default = "ingressgateway"
 }
 
+variable "dns_record" {
+  type    = string
+  default = "kubeflow"
+}
+
 variable "domain_name" {
   type    = string
   default = ""
@@ -94,6 +99,6 @@ variable "oidc_redirect_url" {
 }
 
 variable "kubeflow_components" {
-  type    = list
+  type    = list(string)
   default = ["jupyter", "spark", "pytorch", "knative", "spartakus", "tensorflow", "katib", "pipelines", "seldon"]
 }
