@@ -33,6 +33,7 @@ locals {
     {
       credential_name          = var.certificate_name,
       domain_name              = var.domain_name,
+      dns_record               = var.dns_record,
       istio_namespace          = var.istio_namespace
       ingress_gateway_selector = var.ingress_gateway_selector
       namespace                = kubernetes_namespace.kubeflow.metadata.0.name
