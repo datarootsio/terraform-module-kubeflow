@@ -44,7 +44,7 @@ variable "ingress_gateway_selector" {
 }
 
 variable "dns_record" {
-  type = string
+  type    = string
   default = "kubeflow"
 }
 
