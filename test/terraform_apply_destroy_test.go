@@ -28,7 +28,7 @@ func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error
 		Logger:             logger.TestingT,
 	}
 
-	terraformOptions.Vars["install_istio"] = false
+	terraformOptions.Vars["install_istio"] = true
 
 	return random_id, terraformOptions, nil
 }

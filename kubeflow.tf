@@ -23,6 +23,7 @@ resource "k8s_manifest" "kubeflow_kfdef" {
     {
       namespace  = kubernetes_namespace.kubeflow.metadata.0.name,
       components = var.kubeflow_components
+      version    = var.kubeflow_version
     }
   )
 }

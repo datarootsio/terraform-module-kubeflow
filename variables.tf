@@ -102,3 +102,8 @@ variable "kubeflow_components" {
   type    = list(string)
   default = ["jupyter", "spark", "pytorch", "knative", "spartakus", "tensorflow", "katib", "pipelines", "seldon"]
 }
+
+variable "kubeflow_version" {
+  type = string
+  default = "1.0.2"
+}
