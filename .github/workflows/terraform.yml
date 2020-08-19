@@ -22,7 +22,7 @@ jobs:
           terraform_version: 0.13.0
 
       - name: Terraform Init
-        run: TF_LOG=DEBUG terraform init
+        run: TF_LOG=TRACE terraform init
 
       - name: Terraform Format
         run: terraform fmt -check
