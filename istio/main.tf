@@ -1,10 +1,3 @@
-provider "k8s" {
-  source  = "banzaicloud/k8s"
-  version = "0.8.2"
-}
-
-provider "kubernetes" {}
-
 resource "kubernetes_namespace" "istio_namespace" {
   metadata {
     name = var.istio_namespace
