@@ -1,4 +1,7 @@
-provider "k8s" {}
+provider "k8s" {
+  source  = "banzaicloud/k8s"
+  version = "0.8.2"
+}
 
 provider "kubernetes" {}
 
