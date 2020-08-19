@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "kubeflow" {
-  depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
+  depends_on = [module.istio, helm_release.cert_manager]
   metadata {
     name = "kubeflow"
     labels = {
@@ -44,7 +44,7 @@ locals {
 }
 
 resource "k8s_manifest" "kubeflow_ingress_vs" {
-  depends_on = [kubernetes_deployment.kubeflow_operator, module.istio.wait_for_crds, k8s_manifest.kubeflow_application_crd]
+  depends_on = [kubernetes_deployment.kubeflow_operator, module.istio, k8s_manifest.kubeflow_application_crd]
   count      = length(local.kubeflow_ingress_vs_manifests)
   content    = local.kubeflow_ingress_vs_manifests[count.index]
 }
