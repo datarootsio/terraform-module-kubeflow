@@ -1,14 +1,15 @@
 provider "kubernetes" {}
 
-provider "k8s" {
-  source  = "banzaicloud/k8s"
-  version = "0.8.2"
-}
-
 provider "helm" {}
 
 terraform {
   required_version = "~> 0.13"
+  required_providers {
+    k8s = {
+      source  = "banzaicloud/k8s"
+      version = "0.8.2"
+    }
+  }
 }
 
 module "auth" {
