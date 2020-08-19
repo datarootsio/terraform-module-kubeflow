@@ -5,7 +5,7 @@ terraform {
       source = "hashicorp/helm"
     }
     kubernetes = {
-      source = "kubernetes/helm"
+      source = "hashicorp/kubernetes"
     }
     k8s = {
       source  = "banzaicloud/k8s"
@@ -13,6 +13,12 @@ terraform {
     }
   }
 }
+
+provider "k8s" {}
+
+provider "helm" {}
+
+provider "kubernetes" {}
 
 module "auth" {
   depends_on = [module.istio, k8s_manifest.kubeflow_application_crd]
