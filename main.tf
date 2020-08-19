@@ -32,7 +32,7 @@ module "auth" {
 }
 
 module "istio" {
-  depends_on = helm_release.cert_manager
+  depends_on = [helm_release.cert_manager]
   count      = var.install_istio ? 1 : 0
   providers = {
     kubernetes = kubernetes
