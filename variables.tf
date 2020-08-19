@@ -104,6 +104,6 @@ variable "kubeflow_components" {
 }
 
 variable "kubeflow_version" {
-  type = string
+  type    = string
   default = "1.0.2"
 }
