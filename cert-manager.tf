@@ -25,7 +25,7 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "null_resource" "wait_for_certs" {
-  count = var.install_cert_manager ? 1 : 0
+  count      = var.install_cert_manager ? 1 : 0
   depends_on = [helm_release.cert_manager]
   triggers = {
     always_run = timestamp()
@@ -33,7 +33,8 @@ resource "null_resource" "wait_for_certs" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "sleep 180" }
+    command     = "sleep 180"
+  }
 }
 
 resource "k8s_manifest" "selfsigned_issuer" {
