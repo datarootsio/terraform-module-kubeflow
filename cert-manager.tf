@@ -31,7 +31,7 @@ resource "null_resource" "check_cert_manager_crds" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "timeout 10m bash -c while [[ \"$(kubectl get crds | grep 'issuers' | wc -l)\" -ne \"2\" ]]; do echo \"Waiting for Cert-Manager CRDs\";  sleep 5; done"
+    command     = "runtime=\"5 minute\"; endtime=$(date -ud \"$runtime\" +%s); while [[ $(date -u +%s) -le $endtime && \"$(kubectl get crds | grep 'issuers' | wc -l)\" -ne \"2\" ]]; do echo \"Waiting for Cert-Manager CRDs\";  sleep 5; done"
   }
 }
 
