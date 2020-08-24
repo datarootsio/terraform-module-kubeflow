@@ -61,11 +61,11 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	k8s.CreateNamespace(t, cmK8sOptions, "cert-manager")
 	defer k8s.DeleteNamespace(t, cmK8sOptions, "cert-manager")
 
+	emptyOptions := &helm.Options{}
 
-
-	_, err = helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "add", "jetstack", "https://charts.jetstack.io")
+	_, err = helm.RunHelmCommandAndGetOutputE(t, emptyOptions, "repo", "add", "jetstack", "https://charts.jetstack.io")
 	assert.NoError(t, err)
-	_, err = helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "update")
+	_, err = helm.RunHelmCommandAndGetOutputE(t, emptyOptions, "repo", "update")
 	assert.NoError(t, err)
 
 	cmOptions := &helm.Options{
