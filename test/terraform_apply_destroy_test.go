@@ -61,8 +61,8 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	k8s.CreateNamespace(t, cmK8sOptions, "cert-manager")
 	defer k8s.DeleteNamespace(t, cmK8sOptions, "cert-manager")
 
-	requre.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"add", "jetstack", "https://charts.jetstack.io"}))
-	requre.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"update"}))
+	require.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"add", "jetstack", "https://charts.jetstack.io"}))
+	require.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"update"}))
 
 	cmOptions := &helm.Options{
 		KubectlOptions: cmK8sOptions,
