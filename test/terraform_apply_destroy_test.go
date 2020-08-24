@@ -33,6 +33,22 @@ func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error
 	return random_id, terraformOptions, nil
 }
 
+func getIstioTerraformOptions(t *testing.T) (*terraform.Options, error) {
+
+	tempTestFolder := test_structure.CopyTerraformFolderToTemp(t, "..", "istio")
+
+	terraformOptions := &terraform.Options{
+		TerraformDir:       tempTestFolder,
+		Vars:               map[string]interface{}{},
+		MaxRetries:         5,
+		TimeBetweenRetries: 5 * time.Minute,
+		NoColor:            false,
+		Logger:             logger.TestingT,
+	}
+
+	return terraformOptions, nil
+}
+
 func TestApplyAndDestroyWithSaneValues(t *testing.T) {
 	_, options, err := getDefaultTerraformOptions(t)
 	assert.NoError(t, err)
@@ -55,7 +71,9 @@ func TestApplyAndDestroyWithSaneValues(t *testing.T) {
 
 func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	_, options, err := getDefaultTerraformOptions(t)
+	istioOptions, err2 := getIstioTerraformOptions(t)
 	assert.NoError(t, err)
+	assert.NoError(t, err2)
 
 	cmK8sOptions := k8s.NewKubectlOptions("", "", "cert-manager")
 	k8s.CreateNamespace(t, cmK8sOptions, "cert-manager")
@@ -86,6 +104,16 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	options.Vars["domain_name"] = "foo.local"
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+
+	istioOptions.Vars["ingress_gateway_ip"] = "10.20.30.40"
+	istioOptions.Vars["use_cert_manager"] = true
+	istioOptions.Vars["domain_name"] = "foo.local"
+	istioOptions.Vars["letsencrypt_email"] = "foo@bar.local"
+	istioOptions.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+
+	defer terraform.Destroy(t, istioOptions)
+	_, err = terraform.InitAndApplyE(t, istioOptions)
+	assert.NoError(t, err)
 
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
