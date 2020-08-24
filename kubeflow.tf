@@ -10,7 +10,8 @@ resource "kubernetes_namespace" "kubeflow" {
 }
 
 resource "k8s_manifest" "kubeflow_application_crd" {
-  content = templatefile("${path.module}/manifests/kubeflow/application-crd.yaml", {}
+  content = templatefile("${path.module}/manifests/kubeflow/application-crd.yaml",
+    {}
   )
 }
 

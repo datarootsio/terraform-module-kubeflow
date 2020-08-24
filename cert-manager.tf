@@ -1,4 +1,5 @@
 resource "kubernetes_namespace" "cert_manager" {
+  count = var.install_cert_manager ? 1 : 0
   metadata {
     annotations = {
       name = var.cert_manager_namespace
@@ -7,32 +8,35 @@ resource "kubernetes_namespace" "cert_manager" {
   }
 }
 
-resource "null_resource" "apply_crd" {
+resource "helm_release" "cert_manager" {
+  count         = var.install_cert_manager ? 1 : 0
+  name          = "cert-manager"
+  repository    = "https://charts.jetstack.io"
+  namespace     = kubernetes_namespace.cert_manager[0].metadata.0.name
+  chart         = "cert-manager"
+  keyring       = ""
+  recreate_pods = true
+  version       = var.cert_manager_version
 
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+}
+
+resource "null_resource" "check_cert_manager_crds" {
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.crds.yaml"
+    command     = "timeout 10m while [[ \"$(kubectl get crds | grep 'issuers' | wc -l)\" -ne \"2\" ]]; do echo \"Waiting for Cert-Manager CRDs\";  sleep 5; done"
   }
 }
 
-resource "helm_release" "cert_manager" {
-  depends_on    = [null_resource.apply_crd]
-  name          = "cert-manager"
-  repository    = "https://charts.jetstack.io"
-  namespace     = kubernetes_namespace.cert_manager.metadata.0.name
-  chart         = "cert-manager"
-  keyring       = ""
-  recreate_pods = true
-  version       = "v0.14.1"
-}
-
-
 resource "k8s_manifest" "selfsigned_issuer" {
-  depends_on = [helm_release.cert_manager]
+  depends_on = [null_resource.check_cert_manager_crds]
   content = templatefile(
     "${path.module}/manifests/cert-manager/self-signed.yaml",
     {}
@@ -40,7 +44,8 @@ resource "k8s_manifest" "selfsigned_issuer" {
 }
 
 resource "k8s_manifest" "letsencrypt_issuer" {
-  depends_on = [helm_release.cert_manager]
+  count      = var.use_cert_manager ? 1 : 0
+  depends_on = [null_resource.check_cert_manager_crds]
   content = templatefile(
     "${path.module}/manifests/cert-manager/letsencrypt-prod.yaml",
     {

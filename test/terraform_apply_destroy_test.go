@@ -6,6 +6,7 @@ import (
 	"time"
 
 	//"github.com/gruntwork-io/terratest/modules/k8s"
+	"github.com/gruntwork-io/terratest/modules/helm"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -28,12 +29,10 @@ func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error
 		Logger:             logger.TestingT,
 	}
 
-	terraformOptions.Vars["install_istio"] = true
-
 	return random_id, terraformOptions, nil
 }
 
-func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
+func TestApplyAndDestroyWithSaneValues(t *testing.T) {
 	_, options, err := getDefaultTerraformOptions(t)
 	assert.NoError(t, err)
 
@@ -42,6 +41,40 @@ func TestApplyAndDestroyWithDefaultValues(t *testing.T) {
 	options.Vars["istio_namespace"] = "istio-system"
 	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
 	options.Vars["use_cert_manager"] = true
+	options.Vars["install_istio"] = true
+	options.Vars["install_cert_manager"] = true
+	options.Vars["domain_name"] = "foo.local"
+	options.Vars["letsencrypt_email"] = "foo@bar.local"
+	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+
+	defer terraform.Destroy(t, options)
+	_, err = terraform.InitAndApplyE(t, options)
+	assert.NoError(t, err)
+}
+
+func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
+	_, options, err := getDefaultTerraformOptions(t)
+	assert.NoError(t, err)
+
+	cmK8sOptions := k8s.NewKubectlOptions("", "", "cert-manager")
+	k8s.CreateNamespace(t, cmK8sOptions, "cert-manager")
+	defer k8s.DeleteNamespace(t, cmK8sOptions, "cert-manager")
+
+	cmOptions := &helm.Options{
+		KubectlOptions: cmK8sOptions,
+		SetValues: map[string]string{
+			"installCRDs": "true",
+		},
+		Version: "v0.16.1",
+	}
+
+	defer Delete(t, cmOptions, "cert-manager", true)
+	require.NoError(t, InstallE(t, cmOptions, "https://charts.jetstack.io/cert-manager", "cert-manager"))
+
+	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
+	options.Vars["use_cert_manager"] = true
+	options.Vars["install_istio"] = false
+	options.Vars["install_cert_manager"] = false
 	options.Vars["domain_name"] = "foo.local"
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}

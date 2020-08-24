@@ -3,6 +3,11 @@ variable "install_istio" {
   default = false
 }
 
+variable "install_cert_manager" {
+  type    = bool
+  default = false
+}
+
 variable "istio_namespace" {
   type    = string
   default = "istio-system"
@@ -25,7 +30,7 @@ variable "kubeflow_operator_namespace" {
 
 variable "cert_manager_version" {
   type    = string
-  default = "v0.15.1"
+  default = "v0.16.1"
 }
 
 variable "ingress_gateway_annotations" {
