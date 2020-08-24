@@ -136,6 +136,8 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	_, err = terraform.InitAndApplyE(t, istioOptions)
 	assert.NoError(t, err)
 
+    time.Sleep(180 * time.Second)
+
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
 	assert.NoError(t, err)
