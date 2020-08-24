@@ -24,19 +24,8 @@ resource "helm_release" "cert_manager" {
   }
 }
 
-resource "null_resource" "check_cert_manager_crds" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "runtime=\"10 minute\"; endtime=$(date -ud \"$runtime\" +%s); while [[ $(date -u +%s) -le $endtime && \"$(kubectl get pod -n ${var.cert_manager_namespace} -l app=webhook | grep Running | wc -l)\" -ne \"1\" ]]; do echo \"Waiting for Cert-Manager Webhooks\";  sleep 5; done"
-  }
-}
-
 resource "k8s_manifest" "selfsigned_issuer" {
-  depends_on = [null_resource.check_cert_manager_crds]
+  depends_on = [helm_release.cert_manager]
   content = templatefile(
     "${path.module}/manifests/cert-manager/self-signed.yaml",
     {}
@@ -45,7 +34,7 @@ resource "k8s_manifest" "selfsigned_issuer" {
 
 resource "k8s_manifest" "letsencrypt_issuer" {
   count      = var.use_cert_manager ? 1 : 0
-  depends_on = [null_resource.check_cert_manager_crds]
+  depends_on = [helm_release.cert_manager]
   content = templatefile(
     "${path.module}/manifests/cert-manager/letsencrypt-prod.yaml",
     {
