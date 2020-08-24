@@ -63,8 +63,10 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 
 
 
-	require.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "add", "jetstack", "https://charts.jetstack.io"))
-	require.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "update"))
+	_, err = helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "add", "jetstack", "https://charts.jetstack.io")
+	assert.NoError(t, err)
+	_, err = helm.RunHelmCommandAndGetOutputE(t, nil, "repo", "update")
+	assert.NoError(t, err)
 
 	cmOptions := &helm.Options{
 		KubectlOptions: cmK8sOptions,
