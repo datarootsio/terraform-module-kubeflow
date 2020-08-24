@@ -60,4 +60,5 @@ jobs:
         run: |
           curl -sfL https://get.k3s.io | sh -s - --disable traefik --disable servicelb
           kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
           go test -v -timeout ${{ env.tests_timeout }} ./...

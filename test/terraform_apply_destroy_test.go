@@ -5,14 +5,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/helm"
+	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require"
 )
 
 func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error) {
@@ -61,6 +61,9 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	k8s.CreateNamespace(t, cmK8sOptions, "cert-manager")
 	defer k8s.DeleteNamespace(t, cmK8sOptions, "cert-manager")
 
+	requre.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"add", "jetstack", "https://charts.jetstack.io"}))
+	requre.NoError(t, helm.RunHelmCommandAndGetOutputE(t, nil, "repo", []string{"update"}))
+
 	cmOptions := &helm.Options{
 		KubectlOptions: cmK8sOptions,
 		SetValues: map[string]string{
@@ -70,7 +73,7 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	}
 
 	defer helm.Delete(t, cmOptions, "cert-manager", true)
-	require.NoError(t, helm.InstallE(t, cmOptions, "https://charts.jetstack.io/cert-manager", "cert-manager"))
+	require.NoError(t, helm.InstallE(t, cmOptions, "jetstack/cert-manager", "cert-manager"))
 
 	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
 	options.Vars["use_cert_manager"] = true
