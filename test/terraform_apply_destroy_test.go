@@ -12,6 +12,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
+    "github.com/stretchr/testify/require"
 )
 
 func getDefaultTerraformOptions(t *testing.T) (string, *terraform.Options, error) {
