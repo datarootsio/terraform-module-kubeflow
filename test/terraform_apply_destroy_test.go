@@ -68,8 +68,8 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 		Version: "v0.16.1",
 	}
 
-	defer Delete(t, cmOptions, "cert-manager", true)
-	require.NoError(t, InstallE(t, cmOptions, "https://charts.jetstack.io/cert-manager", "cert-manager"))
+	defer helm.Delete(t, cmOptions, "cert-manager", true)
+	require.NoError(t, helm.InstallE(t, cmOptions, "https://charts.jetstack.io/cert-manager", "cert-manager"))
 
 	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
 	options.Vars["use_cert_manager"] = true
