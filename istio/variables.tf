@@ -1,8 +1,3 @@
-variable "install_istio" {
-  type = bool
-  default = false
-}
-
 variable "istio_namespace" {
   type    = string
   default = "istio-system"
@@ -41,9 +36,4 @@ variable "use_cert_manager" {
 variable "certificate_name" {
   type    = string
   default = ""
-}
-
-variable "istio_depends_on" {
-  type    = any
-  default = null
 }

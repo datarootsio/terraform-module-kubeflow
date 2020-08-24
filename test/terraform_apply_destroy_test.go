@@ -108,7 +108,6 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	istioOptions.Vars["ingress_gateway_ip"] = "10.20.30.40"
 	istioOptions.Vars["use_cert_manager"] = true
 	istioOptions.Vars["domain_name"] = "foo.local"
-	istioOptions.Vars["letsencrypt_email"] = "foo@bar.local"
 	istioOptions.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 
 	defer terraform.Destroy(t, istioOptions)
