@@ -37,3 +37,8 @@ variable "certificate_name" {
   type    = string
   default = ""
 }
+
+variable "istio_version" {
+  type = string
+  default = "1.6.8"
+}

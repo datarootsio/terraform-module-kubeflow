@@ -41,12 +41,16 @@ spec:
           ports:
           - name: status-port
             port: 15020
+            targetPort: 15020
           - name: http2
             port: 80
+            targetPort: 8080
           - name: https
             port: 443
+            targetPort: 8443
           - name: tls
             port: 15443
+            targetPort: 15443
 %{ endif ~}
     - name: cluster-local-gateway
       enabled: true
@@ -59,7 +63,10 @@ spec:
           ports:
           - port: 15020
             name: status-port
+            targetPort: 15021
           - port: 80
             name: http2
+            targetPort: 8081
           - port: 443
             name: https
+            targetPort: 8444

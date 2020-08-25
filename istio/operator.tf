@@ -41,7 +41,7 @@ resource "kubernetes_deployment" "istio_operator" {
 
         container {
           name    = "istio-operator"
-          image   = "docker.io/istio/operator:1.6.1"
+          image   = "docker.io/istio/operator:${var.istio_version}"
           command = ["operator", "server"]
 
           env {

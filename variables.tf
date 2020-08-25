@@ -4,6 +4,12 @@ variable "install_istio" {
   description = "Should this module install istio"
 }
 
+variable "istio_version" {
+  type        = string
+  default     = "1.6.8"
+  description = "The version of istio that will be installed"
+}
+
 variable "install_cert_manager" {
   type    = bool
   default = false
