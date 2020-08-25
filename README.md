@@ -17,18 +17,21 @@ Due to the difficulties to have proper optional dependencies, with TF 0.12 you n
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cert\_manager\_namespace | The namespace for istio operator | `string` | `"cert-manager"` | no |
-| cert\_manager\_version | The version of cert-manager | `string` | `"v0.15.1"` | no |
+| cert\_manager\_version | The version of cert-manager | `string` | `"v0.16.1"` | no |
 | certificate\_name | The secret where the pre-generated certificate is stored | `string` | `""` | no |
 | dns\_record | The DNS record for Kubeflow's ingresses | `string` | `"kubeflow"` | no |
 | domain\_name | The domain name for Kubeflow's ingresses DNS records | `string` | `""` | no |
 | ingress\_gateway\_annotations | A map of key-value annotations for istio ingressgateway | `map(string)` | `{}` | no |
 | ingress\_gateway\_ip | The IP of istio ingressgateway | `string` | `""` | no |
 | ingress\_gateway\_selector | Istio ingressgateway selector | `string` | `"ingressgateway"` | no |
+| install\_cert\_manager | n/a | `bool` | `false` | no |
 | install\_istio | Should this module install istio | `bool` | `false` | no |
 | istio\_namespace | The namespace for istio | `string` | `"istio-system"` | no |
 | istio\_operator\_namespace | The namespace for istio operator | `string` | `"istio-operator"` | no |
 | kubeflow\_components | The list of components to install. KF Operator does not support updates so changes after initial deployment will not be reflected. | `list(string)` | <pre>[<br>  "jupyter",<br>  "spark",<br>  "pytorch",<br>  "knative",<br>  "spartakus",<br>  "tensorflow",<br>  "katib",<br>  "pipelines",<br>  "seldon"<br>]</pre> | no |
 | kubeflow\_operator\_namespace | The namespace for kubeflow operator | `string` | `"kubeflow-operator"` | no |
+| kubeflow\_operator\_version | The version of kubeflow operator to install | `string` | `"1.1.0"` | no |
+| kubeflow\_version | The version of kubeflow to install | `string` | `"1.1.0"` | no |
 | letsencrypt\_email | The email to use for let's encrypt certificate requests | `string` | `""` | no |
 | oidc\_auth\_url | The auth url for OIDC | `string` | `"/dex/auth"` | no |
 | oidc\_client\_id | The Client ID for OIDC | `string` | `"kubeflow-oidc-authservice"` | no |

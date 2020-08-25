@@ -49,6 +49,28 @@ func getIstioTerraformOptions(t *testing.T) (*terraform.Options, error) {
 	return terraformOptions, nil
 }
 
+func TestApplyAndDestroyWithOldValues(t *testing.T) {
+	_, options, err := getDefaultTerraformOptions(t)
+	assert.NoError(t, err)
+
+	options.Vars["cert_manager_namespace"] = "cert-manager"
+	options.Vars["istio_operator_namespace"] = "istio-operator"
+	options.Vars["istio_namespace"] = "istio-system"
+	options.Vars["ingress_gateway_ip"] = "10.20.30.40"
+	options.Vars["use_cert_manager"] = true
+	options.Vars["install_istio"] = true
+	options.Vars["install_cert_manager"] = true
+	options.Vars["domain_name"] = "foo.local"
+	options.Vars["letsencrypt_email"] = "foo@bar.local"
+	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
+	options.Vars["kubeflow_version"] = "1.0.2"
+	options.Vars["kubeflow_operator_version"] = "1.0.0"
+
+	defer terraform.Destroy(t, options)
+	_, err = terraform.InitAndApplyE(t, options)
+	assert.NoError(t, err)
+}
+
 func TestApplyAndDestroyWithSaneValues(t *testing.T) {
 	_, options, err := getDefaultTerraformOptions(t)
 	assert.NoError(t, err)

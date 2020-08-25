@@ -34,14 +34,10 @@ variable "kubeflow_operator_namespace" {
 }
 
 variable "cert_manager_version" {
-<<<<<<< HEAD
-  type    = string
-  default = "v0.16.1"
-=======
   type        = string
-  default     = "v0.15.1"
+  default     = "v0.16.1"
   description = "The version of cert-manager"
->>>>>>> v0.12.2
+
 }
 
 variable "ingress_gateway_annotations" {
@@ -129,17 +125,19 @@ variable "oidc_redirect_url" {
 }
 
 variable "kubeflow_components" {
-<<<<<<< HEAD
-  type    = list(string)
-  default = ["jupyter", "spark", "pytorch", "knative", "spartakus", "tensorflow", "katib", "pipelines", "seldon"]
-}
-
-variable "kubeflow_version" {
-  type    = string
-  default = "1.0.2"
-=======
   type        = list(string)
   default     = ["jupyter", "spark", "pytorch", "knative", "spartakus", "tensorflow", "katib", "pipelines", "seldon"]
   description = "The list of components to install. KF Operator does not support updates so changes after initial deployment will not be reflected."
->>>>>>> v0.12.2
+}
+
+variable "kubeflow_version" {
+  type        = string
+  default     = "1.1.0"
+  description = "The version of kubeflow to install"
+}
+
+variable "kubeflow_operator_version" {
+  type        = string
+  default     = "1.1.0"
+  description = "The version of kubeflow operator to install"
 }
