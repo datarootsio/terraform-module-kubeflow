@@ -27,7 +27,6 @@ jobs:
           include: ${{ steps.get_tf_version.outputs.version }}
           exclude: '*-rc*'
           commit-ish: 'HEAD~'
-        if: github.ref == 'refs/heads/master'
       - run: echo "::set-output name=version::$(echo ${{ steps.get_latest_tag.outputs.tag }} | cut -d- -f2)"
         id: get_version
       - name: 'Get next version'
