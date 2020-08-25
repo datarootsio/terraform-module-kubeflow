@@ -1,6 +1,18 @@
-provider "k8s" {}
-
-provider "kubernetes" {}
+terraform {
+  required_version = "~> 0.13"
+  required_providers {
+    helm = {
+      source = "hashicorp/helm"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    k8s = {
+      source  = "banzaicloud/k8s"
+      version = "0.8.2"
+    }
+  }
+}
 
 resource "kubernetes_namespace" "istio_namespace" {
   metadata {

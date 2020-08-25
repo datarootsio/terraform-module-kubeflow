@@ -1,21 +1,33 @@
-provider "kubernetes" {}
+terraform {
+  required_version = "~> 0.13"
+  required_providers {
+    helm = {
+      source = "hashicorp/helm"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
+    k8s = {
+      source  = "banzaicloud/k8s"
+      version = "0.8.2"
+    }
+  }
+}
 
 provider "k8s" {}
 
 provider "helm" {}
 
-terraform {
-  required_version = "~> 0.12"
-}
+provider "kubernetes" {}
 
 module "auth" {
+  depends_on = [module.istio, k8s_manifest.kubeflow_application_crd]
   providers = {
     kubernetes = kubernetes
     k8s        = k8s
   }
   source             = "./auth"
   application_secret = var.oidc_client_secret
-  auth_depends_on    = [module.istio.wait_for_crds, k8s_manifest.kubeflow_application_crd]
   client_id          = var.oidc_client_id
   domain_name        = var.domain_name
   issuer             = var.oidc_issuer
@@ -26,6 +38,8 @@ module "auth" {
 }
 
 module "istio" {
+  depends_on = [helm_release.cert_manager]
+  count      = var.install_istio ? 1 : 0
   providers = {
     kubernetes = kubernetes
     k8s        = k8s
@@ -40,5 +54,5 @@ module "istio" {
   istio_operator_namespace    = var.istio_operator_namespace
   use_cert_manager            = var.use_cert_manager
   certificate_name            = var.certificate_name
-  istio_depends_on            = helm_release.cert_manager
+  istio_version               = var.istio_version
 }

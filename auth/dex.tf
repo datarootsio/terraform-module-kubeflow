@@ -10,7 +10,6 @@ locals {
 }
 
 resource "k8s_manifest" "dex_crd" {
-  depends_on = [var.auth_depends_on]
   count      = length(local.dex_crd_manifests)
   content    = local.dex_crd_manifests[count.index]
 }

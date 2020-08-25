@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "kubeflow" {
-  depends_on = [module.istio.wait_for_crds, helm_release.cert_manager]
+  depends_on = [module.istio, helm_release.cert_manager]
   metadata {
     name = "kubeflow"
     labels = {
@@ -10,19 +10,21 @@ resource "kubernetes_namespace" "kubeflow" {
 }
 
 resource "k8s_manifest" "kubeflow_application_crd" {
-  content = templatefile("${path.module}/manifests/kubeflow/application-crd.yaml", {}
+  content = templatefile("${path.module}/manifests/kubeflow/application-crd.yaml",
+    {}
   )
 }
 
 resource "k8s_manifest" "kubeflow_kfdef" {
   depends_on = [kubernetes_deployment.kubeflow_operator, k8s_manifest.kubeflow_application_crd]
   timeouts {
-    delete = "5m"
+    delete = "15m"
   }
   content = templatefile("${path.module}/manifests/kubeflow/kfdef.yaml",
     {
       namespace  = kubernetes_namespace.kubeflow.metadata.0.name,
       components = var.kubeflow_components
+      version    = var.kubeflow_version
     }
   )
 }
@@ -44,7 +46,7 @@ locals {
 }
 
 resource "k8s_manifest" "kubeflow_ingress_vs" {
-  depends_on = [kubernetes_deployment.kubeflow_operator, module.istio.wait_for_crds, k8s_manifest.kubeflow_application_crd]
+  depends_on = [kubernetes_deployment.kubeflow_operator, module.istio, k8s_manifest.kubeflow_application_crd]
   count      = length(local.kubeflow_ingress_vs_manifests)
   content    = local.kubeflow_ingress_vs_manifests[count.index]
 }
