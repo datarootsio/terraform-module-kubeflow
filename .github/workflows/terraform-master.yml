@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-        with:
-          fetch-depth: '0'
       - run: |
           if [[ "$GITHUB_REF_NAME" == "master" ]]; then
             echo "::set-output name=version::v0.13*"
