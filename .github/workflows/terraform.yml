@@ -22,12 +22,12 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.13.0
-        if: ${{ github.ref == "master" }}
+        if: github.ref == 'refs/heads/master'
 
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.29
-        if: ${{ github.ref == "tf012" }}
+        if: github.ref == 'refs/heads/tf012'
 
       - name: Terraform Init
         run: terraform init
@@ -50,12 +50,12 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.13.0
-        if: ${{ github.ref == "master" }}
+        if: github.ref == 'refs/heads/master'
 
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.29
-        if: ${{ github.ref == "tf012" }}
+        if: github.ref == 'refs/heads/tf012'
 
       - name: "go vet"
         run: go vet ./...

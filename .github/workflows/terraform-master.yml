@@ -20,7 +20,7 @@ jobs:
           include: 'v0.13*'
           exclude: '*-rc*'
           commit-ish: 'HEAD~'
-        if: ${{ github.ref == "master" }}
+        if: github.ref == 'refs/heads/master'
       - name: Find Tag
         id: get_latest_tag
         uses: jimschubert/query-tag-action@v1
@@ -28,7 +28,7 @@ jobs:
           include: 'v0.12*'
           exclude: '*-rc*'
           commit-ish: 'HEAD~'
-        if: ${{ github.ref == "tf012" }}
+        if: github.ref == 'refs/heads/tf012'
       - run: echo "::set-output name=version::$(echo ${{ steps.get_latest_tag.outputs.tag }} | cut -d- -f2)"
         id: get_version
       - name: 'Get next version'
