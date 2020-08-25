@@ -17,6 +17,7 @@ resource "helm_release" "cert_manager" {
   keyring       = ""
   recreate_pods = true
   version       = var.cert_manager_version
+  timeout       = 600
 
   set {
     name  = "installCRDs"
