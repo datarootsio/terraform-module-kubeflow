@@ -57,6 +57,14 @@ jobs:
           terraform_version: 0.12.29
         if: github.ref == 'refs/heads/tf012'
 
+      - name: "Download terraform k8s provider"
+        run: |
+          wget https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v0.7.7/terraform-provider-k8s_0.7.7_linux_amd64.tar.gz
+          tar xvzf terraform-provider-k8s_0.7.7_linux_amd64.tar.gz && chmod +x terraform-provider-k8s
+          mkdir -p ~/.terraform.d/plugins
+          mv terraform-provider-k8s ~/.terraform.d/plugins
+        if: github.ref == 'refs/heads/tf012'
+
       - name: "go vet"
         run: go vet ./...
 
