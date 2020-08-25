@@ -13,22 +13,21 @@ jobs:
         uses: actions/checkout@master
         with:
           fetch-depth: '0'
+      - run: |
+          if [[ "$GITHUB_REF_NAME" == "master" ]]; then
+            echo "::set-output name=version::v0.13*"
+          else
+            echo "::set-output name=version::v0.12*"
+          fi
+        id: get_tf_version
       - name: Find Tag
         id: get_latest_tag
         uses: jimschubert/query-tag-action@v1
         with:
-          include: 'v0.13*'
+          include: ${{ steps.get_tf_version.outputs.version }}
           exclude: '*-rc*'
           commit-ish: 'HEAD~'
         if: github.ref == 'refs/heads/master'
-      - name: Find Tag
-        id: get_latest_tag
-        uses: jimschubert/query-tag-action@v1
-        with:
-          include: 'v0.12*'
-          exclude: '*-rc*'
-          commit-ish: 'HEAD~'
-        if: github.ref == 'refs/heads/tf012'
       - run: echo "::set-output name=version::$(echo ${{ steps.get_latest_tag.outputs.tag }} | cut -d- -f2)"
         id: get_version
       - name: 'Get next version'
