@@ -69,12 +69,12 @@ resource "kubernetes_deployment" "istio_operator" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = "200m"
               memory = "256Mi"
             }
 
-            requests {
+            requests = {
               cpu    = "50m"
               memory = "128Mi"
             }

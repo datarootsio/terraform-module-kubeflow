@@ -147,3 +147,15 @@ variable "kubeflow_operator_version" {
   default     = "1.0.0"
   description = "The version of kubeflow operator to install"
 }
+
+variable "config_context" {
+  type        = string
+  default     = ""
+  description = "kubernetes config context to use"
+}
+
+variable "config_path" {
+  type        = string
+  default     = "~/.kube/config"
+  description = "kubernetes config file path"
+}

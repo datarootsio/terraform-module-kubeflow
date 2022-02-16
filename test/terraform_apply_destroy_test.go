@@ -86,6 +86,9 @@ func TestApplyAndDestroyWithSaneValues(t *testing.T) {
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 
+	options.Vars["config_context"] = "minikube"
+	options.Vars["config_path"] = "~/.kube/config"
+
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
 	assert.NoError(t, err)
@@ -106,9 +109,12 @@ func TestApplyAndDestroyWithOnlyPipelines(t *testing.T) {
 	options.Vars["letsencrypt_email"] = "foo@bar.local"
 	options.Vars["ingress_gateway_annotations"] = map[string]interface{}{"foo": "bar"}
 	options.Vars["kubeflow_components"] = []string{"'katib'", "'pipelines'"}
-	options.Vars["kubeflow_version"] = "1.1.0"
+	options.Vars["kubeflow_version"] = "master"
 
-	defer terraform.Destroy(t, options)
+	options.Vars["config_context"] = "minikube"
+	options.Vars["config_path"] = "~/.kube/config"
+
+	// defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)
 	assert.NoError(t, err)
 }
@@ -158,7 +164,7 @@ func TestApplyAndDestroyWithExistingIstioCertManager(t *testing.T) {
 	_, err = terraform.InitAndApplyE(t, istioOptions)
 	assert.NoError(t, err)
 
-    time.Sleep(180 * time.Second)
+	time.Sleep(180 * time.Second)
 
 	defer terraform.Destroy(t, options)
 	_, err = terraform.InitAndApplyE(t, options)

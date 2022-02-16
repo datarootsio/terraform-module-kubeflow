@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 0.13"
+  required_version = "~> 1.0.0"
   required_providers {
     helm = {
       source = "hashicorp/helm"
@@ -14,11 +14,21 @@ terraform {
   }
 }
 
-provider "k8s" {}
+provider "k8s" {
+  config_context = var.config_context
+}
 
-provider "helm" {}
+provider "helm" {
+  kubernetes {
+    config_path    = var.config_path
+    config_context = var.config_context
+  }
+}
 
-provider "kubernetes" {}
+provider "kubernetes" {
+  config_path    = var.config_path
+  config_context = var.config_context
+}
 
 module "auth" {
   depends_on = [module.istio, k8s_manifest.kubeflow_application_crd]
